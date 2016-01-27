@@ -83,80 +83,111 @@ figcaption
 
 
 <div class="ui four doubling stackable cards">
-      <a class="ui card" href="./talk-a-introduction/introduction.pdf">
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="film large icon"></i></div>
-      <div class="header"> Introduction </div>
+        <div class="right floated meta"> <i class="film large icon"></i></div>
+        <div class="header"> Introduction </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./talk-a-introduction/introduction.png">
+      <a class="ui card" href="./talk-a-introduction/introduction.pdf">
+        <img src="./talk-a-introduction/introduction.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>An introduction to the module and its assessment mechanisms. Also, the key sources for general context.</p>
       </div>
     </div>
-  </a>
+      <div class="extra content">
+        <div class="ui embed" data-url="https://www.youtube.com/embed/TSEukgliI_A">
+        </div>
+      </div>
+  </div>
 
-      <a class="ui card" href="./talk-b-context/context.pdf">
+
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="film large icon"></i></div>
-      <div class="header"> Context </div>
+        <div class="right floated meta"> <i class="film large icon"></i></div>
+        <div class="header"> Context </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./talk-b-context/context.png">
+      <a class="ui card" href="./talk-b-context/context.pdf">
+        <img src="./talk-b-context/context.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Position patterns in a continuum of Software Engineering knowledge. Explore contrasting definitions of patterns and introduce a definition of patterns appropriate to this module.</p>
       </div>
     </div>
-  </a>
+      <div class="extra content">
+        <div class="ui embed" data-url="https://www.youtube.com/embed/gThHb6_PeHw">
+        </div>
+      </div>
+  </div>
 
-      <a class="ui card" href="./talk-c-languages/languages.pdf">
+
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="film large icon"></i></div>
-      <div class="header"> Programming Languages </div>
+        <div class="right floated meta"> <i class="film large icon"></i></div>
+        <div class="header"> Programming Languages </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./talk-c-languages/languages.png">
+      <a class="ui card" href="./talk-c-languages/languages.pdf">
+        <img src="./talk-c-languages/languages.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Look at programming languages form a number of alternative perspectives. Explore, in particular, how languages approach typing and how we can categorize them according to a typing spectrum.</p>
       </div>
     </div>
-  </a>
+      <div class="extra content">
+        <div class="ui embed" data-url="https://www.youtube.com/embed/zjpUjiOWNHU">
+        </div>
+      </div>
+  </div>
 
-      <a class="ui card" href="./talk-e-patterns-case-study/patterns-case-study.pdf">
+
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="film large icon"></i></div>
-      <div class="header"> Patterns Case Study </div>
+        <div class="right floated meta"> <i class="film large icon"></i></div>
+        <div class="header"> Patterns Case Study </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./talk-e-patterns-case-study/patterns-case-study.png">
+      <a class="ui card" href="./talk-e-patterns-case-study/patterns-case-study.pdf">
+        <img src="./talk-e-patterns-case-study/patterns-case-study.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Plunge into patterns by looking at an example problem/solution. Attempt to characterize the nature of a pattern in concrete terms.</p>
       </div>
     </div>
-  </a>
+      <div class="extra content">
+        <div class="ui embed" data-url="https://www.youtube.com/embed/wQ40dzRIhjE">
+        </div>
+      </div>
+  </div>
 
-      <a class="ui card" href="book/index.html">
+
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="lab large icon"></i></div>
-      <div class="header"> Lab-01 </div>
+        <div class="right floated meta"> <i class="lab large icon"></i></div>
+        <div class="header"> Lab-01 </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./book/img/main.jpg">
+      <a class="ui card" href="book/index.html">
+        <img src="./book/img/main.jpg">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Prepare an suitable version of Eclipse for the forthcoming labs. Download and become familiar with the pacemaker-console project. Explore the Strategy pattern in this context.</p>
       </div>
     </div>
-  </a>
+  </div>
+
 
   </div>
    </div>
@@ -178,6 +209,7 @@ figcaption
 $(document).ready(function()
 {
   $("img").addClass ("ui image");
+  $('.ui.embed').embed();
 
   var images = $(".lab img");
   jQuery.each(images, function(i)  {
@@ -190,6 +222,8 @@ $(document).ready(function()
       $(div_label).insertBefore(images[i]);
     }
   });
+
+
 })    </script>
 
   </body>

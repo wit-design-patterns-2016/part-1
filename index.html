@@ -83,35 +83,41 @@ figcaption
 
 <div class="ui four doubling stackable cards">
 
-    <a class="ui card" href="./topic01-context/index.html">
+    <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="sitemap large icon"></i></div>
-      <div class="header"> Design Pattens Context </div>
+        <div class="right floated meta"> <i class="sitemap large icon"></i></div>
+        <div class="header"> Design Pattens Context </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./topic01-context/./talk-a-introduction/introduction.png">
+      <a class="ui card" href="./topic01-context/index.html">
+        <img src="./topic01-context/./talk-a-introduction/introduction.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Review the course structure and assessment methods and key sources. Explore the context of design patterns, including aspects of programming language design. Explore a specific problem in detail and use this problem to identify 2 potential solutions</p>
       </div>
     </div>
-  </a>
+  </div>
 
-    <a class="ui card" href="./topic02-template-method-strategy/index.html">
+
+    <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="sitemap large icon"></i></div>
-      <div class="header"> Template Method & Strategy </div>
+        <div class="right floated meta"> <i class="sitemap large icon"></i></div>
+        <div class="header"> Template Method & Strategy </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="./topic02-template-method-strategy/./talk-1-template-method/template-method.png">
+      <a class="ui card" href="./topic02-template-method-strategy/index.html">
+        <img src="./topic02-template-method-strategy/./talk-1-template-method/template-method.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Review the Template Method &amp; Strategy Patterns in detail. Assess a simple example of these patterns in action. Explore the primary features of the Xtend programming language. Reimplement both patterns in Xtend, with a particular emphasis on understanding the use of Lambdas in this context</p>
       </div>
     </div>
-  </a>
+  </div>
+
 
 </div>
 
@@ -134,6 +140,7 @@ figcaption
 $(document).ready(function()
 {
   $("img").addClass ("ui image");
+  $('.ui.embed').embed();
 
   var images = $(".lab img");
   jQuery.each(images, function(i)  {
@@ -146,6 +153,8 @@ $(document).ready(function()
       $(div_label).insertBefore(images[i]);
     }
   });
+
+
 })    </script>
 
   </body>

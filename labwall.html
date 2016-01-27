@@ -82,35 +82,41 @@ figcaption
 
 
 <div class="ui four doubling stackable cards">
-      <a class="ui card" href="topic01-context/book/index.html">
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="lab large icon"></i></div>
-      <div class="header"> Lab-01 </div>
+        <div class="right floated meta"> <i class="lab large icon"></i></div>
+        <div class="header"> Lab-01 </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="topic01-context/book/img/main.jpg">
+      <a class="ui card" href="topic01-context/book/index.html">
+        <img src="topic01-context/book/img/main.jpg">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Prepare an suitable version of Eclipse for the forthcoming labs. Download and become familiar with the pacemaker-console project. Explore the Strategy pattern in this context.</p>
       </div>
     </div>
-  </a>
+  </div>
 
-      <a class="ui card" href="topic02-template-method-strategy/book-template-method-strategy/index.html">
+
+      <div class="ui card">
     <div class="content">
-      <div class="right floated meta"> <i class="lab large icon"></i></div>
-      <div class="header"> Lab-02 </div>
+        <div class="right floated meta"> <i class="lab large icon"></i></div>
+        <div class="header"> Lab-02 </div>
     </div>
     <div class="ui bordered rounded image">
-      <img src="topic02-template-method-strategy/book-template-method-strategy/img/main.png">
+      <a class="ui card" href="topic02-template-method-strategy/book-template-method-strategy/index.html">
+        <img src="topic02-template-method-strategy/book-template-method-strategy/img/main.png">
+      </a>
     </div>
     <div class="content">
       <div class="description">
          <p>Review the Java variants of the template method and strategy patterns. Reoode these in Xtend. Reimplement Strategy using Lambdas in Xtend</p>
       </div>
     </div>
-  </a>
+  </div>
+
 
 </div>
    </div>
@@ -132,6 +138,7 @@ figcaption
 $(document).ready(function()
 {
   $("img").addClass ("ui image");
+  $('.ui.embed').embed();
 
   var images = $(".lab img");
   jQuery.each(images, function(i)  {
@@ -144,6 +151,8 @@ $(document).ready(function()
       $(div_label).insertBefore(images[i]);
     }
   });
+
+
 })    </script>
 
   </body>
