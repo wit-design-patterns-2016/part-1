@@ -1,0 +1,550 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+
+     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css" type="text/css">
+     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/solarized_light.min.css" rel="stylesheet" />
+
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/languages/java.min.js"></script>
+     <script>hljs.initHighlightingOnLoad();</script>
+
+      <style>
+
+
+body 
+{
+  font-family: "Open Sans", "Helvetica", "Helvetica Neue",  "Arial", sans-serif;
+}
+
+figcaption
+{
+  margin-bottom: 20px;
+}
+
+.vertical-align
+{
+  display: flex;
+  align-items: center;
+}
+
+.credits
+{
+  min-height:20px;
+}
+    </style>
+
+  </head>
+
+  <body>
+
+  <div class="ui container">
+<style>
+
+
+code
+{
+  font-family: "Monaco";
+  font-size: 110%;
+}
+
+img
+{
+  padding:1px;
+  border:1px solid black;
+}
+
+h1
+{
+  font-style:italic;
+  font-size:130%;
+  border-bottom: thin solid black;
+}
+h2
+{
+  font-size:110%;
+  border-bottom: thin solid black;
+}
+h3
+{
+  font-size:100%;
+  border-bottom: thin solid black;
+}
+
+</style>
+
+<div class="ui fixed top pointing inverted menu labmenu">
+  <header class="header item">
+    <a href="../index.html">
+      <i class="sitemap icon"></i>
+      Observer + Pattern Catalogues
+    </a>
+  </header>
+  <div class="right tab-menu menu">
+    <a class="active item" data-tab="Lab-05b">
+        Lab-05b
+    </a>
+      <a class="item" data-tab="01">
+        01
+      </a>
+      <a class="item" data-tab="02">
+        02
+      </a>
+      <a class="item" data-tab="03">
+        03
+      </a>
+      <a class="item" data-tab="04">
+        04
+      </a>
+      <a class="item" data-tab="05">
+        05
+      </a>
+      <a class="item" data-tab="06">
+        06
+      </a>
+      <a class="item" data-tab="Exercises">
+        Exercises
+      </a>
+    </div>
+</div>
+
+<br><br>
+
+  <div  class="ui tab segment lab" data-tab="Lab-05b">
+    <h1>Objectives</h1>
+<ul>
+<li>Extend the pacemaker-android app to enable activities to be listed</li>
+<li>Explore three patterns in this context:<ul>
+<li>memento</li>
+<li>singleton</li>
+<li>adapter</li>
+</ul>
+</li>
+</ul>
+  </div>
+  <div  class="ui tab segment lab" data-tab="01">
+    <h1>Setup</h1>
+<p>This is v1 of the pacemaker-android project from the last lab:</p>
+<ul>
+<li><a href="./archives/pacemaker-android-v1.zip">pacemaker-android-v1.zip</a></li>
+</ul>
+<p>You can import this for reference purposes, or keep working with your own version.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="02">
+    <h1>Memento I</h1>
+<p>Currently, your createActitivyButtonPressed method in the CreateActivity class looks like this:</p>
+<pre><code class="java"> public void createActivityButtonPressed (View view)
+  {
+    double distance = distancePicker.getValue();
+    MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
+
+    activities.add(activity);
+    Log.v(&quot;Pacemaker&quot;, &quot;CreateActivity Button Pressed with &quot; + distance);
+  }
+</code></pre>
+
+<p>We are creating an activity, and adding it to a list held locally. If the user would like to see the activities, this handler will switch views:</p>
+<pre><code class="java">  public void listActivityButtonPressed (View view) 
+  {
+    Log.v(&quot;Pacemaker&quot;, &quot;List Activityies Button Pressed&quot;);
+    Intent intent = new Intent(this, ActivitiesList.class);
+    startActivity (intent);
+  }
+</code></pre>
+
+<p>However, the activity is not able to access the list we have been updating with new activities.</p>
+<p>This is the current Activity class:</p>
+<pre><code class="java">package org.pacemaker.pacemaker;
+
+import static com.google.common.base.Objects.toStringHelper;
+import com.google.common.base.Objects;
+
+public class MyActivity
+{
+  public Long   id;
+  public String type;
+  public String location;
+  public double distance;
+
+  public MyActivity()
+  {
+  }
+
+  public MyActivity(String type, String location, double distance)
+  {
+    this.type      = type;
+    this.location  = location;
+    this.distance  = distance;
+  }
+
+  @Override
+  public String toString()
+  {
+    return toStringHelper(this).addValue(id)
+        .addValue(type)
+        .addValue(location)
+        .addValue(distance)
+        .toString();
+  }
+
+  @Override
+  public boolean equals(final Object obj)
+  {
+    if (obj instanceof MyActivity)
+    {
+      final MyActivity other = (MyActivity) obj;
+      return Objects.equal(type, other.type)
+          &amp;&amp; Objects.equal(location,  other.location)
+          &amp;&amp; Objects.equal(distance,  other.distance);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hashCode(this.id, this.type, this.location, this.distance);
+  }
+}
+</code></pre>
+
+<p>Augment this class with the following features (as members of the class):</p>
+<pre><code class="java">  public MyActivity(Parcel in)
+  {
+    this.type = in.readString();
+    this.location = in.readString();
+    this.distance = in.readDouble();
+  }
+
+  @Override
+  public int describeContents()
+  {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags)
+  {
+    dest.writeString(type);
+    dest.writeString(location);
+    dest.writeDouble(distance);
+  }
+
+  public static final Parcelable.Creator&lt;MyActivity&gt; CREATOR = new Parcelable.Creator&lt;MyActivity&gt;()
+  {
+    public MyActivity createFromParcel(Parcel in)
+    {
+      return new MyActivity(in);
+    }
+
+    public MyActivity[] newArray(int size)
+    {
+      return new MyActivity[size];
+    }
+  };
+</code></pre>
+
+<p>You will need to make the Activity class implement the Parcelable interface:</p>
+<pre><code>...
+public class MyActivity implements Parcelable
+{
+...
+</code></pre>
+
+<p>This will enable instances of the class to be 'parcelabe' - i.e. externalized to an external to another object.</p>
+<p>We can transfer such a 'parcel' to another activity by adding it to a 'bundle' for that activity, and adding it as an 'extra' for the activity to pick up:</p>
+<pre><code class="java">  public void listActivityButtonPressed (View view) 
+  {
+    Log.v(&quot;Pacemaker&quot;, &quot;List Activityies Button Pressed&quot;);
+    Intent intent = new Intent(this, ActivitiesList.class);
+    Bundle bundle = new Bundle();
+    bundle.putParcelableArrayList(&quot;activities&quot;, activities);
+    intent.putExtras(bundle);
+    startActivity (intent);
+  }
+</code></pre>
+
+<p>This will cause difficulty initiall, with an error on this line:</p>
+<pre><code>    bundle.putParcelableArrayList(&quot;activities&quot;, activities);
+</code></pre>
+
+<p>This is because of the way we have declared the activities list:</p>
+<pre><code>  private List&lt;MyActivity&gt; activities = new ArrayList&lt;MyActivity&gt;();
+</code></pre>
+
+<p>It need to be explicity and ArrayList for the Parcelable builder to compile:</p>
+<pre><code>  private ArrayList&lt;MyActivity&gt; activities = new ArrayList&lt;MyActivity&gt;();
+</code></pre>
+  </div>
+  <div  class="ui tab segment lab" data-tab="03">
+    <h1>Memento II</h1>
+<p>In the ActivitiesList class, we can recover the list from the bundle. This can be done in onCreate:</p>
+<pre><code class="java">    Bundle extras = getIntent().getExtras();  
+    List&lt;Activity&gt; activities  = extras.getParcelableArrayList(&quot;activities&quot;);
+</code></pre>
+
+<p>We might display the activity list to the log:</p>
+<pre><code>    for (MyActivity activity : activities)
+    {
+      Log.v(&quot;Pacemaker&quot;, &quot;Activity: &quot; + activity);
+    }
+</code></pre>
+
+<p>We would expect this to use the toString helper we have provided to Activity model:</p>
+<pre><code class="java">  @Override
+  public String toString()
+  {
+    return toStringHelper(this).addValue(type).addValue(location).addValue(distance).toString();
+  }
+</code></pre>
+
+<p>Check that activities you create now are displayed in the log window.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="04">
+    <h1>Adapter I</h1>
+<p>Just sending the list to the log will not suffice. We should attempt to render them to the list view directly.</p>
+<p>Make sure we have the activitiesListView to hand:</p>
+<pre><code class="java">public class ActivitiesList extends  android.app.Activity
+{
+  private ListView activitiesListView;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState)
+  {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activities_list);
+
+    activitiesListView = (ListView) findViewById(R.id.activitiesListView);
+
+    Bundle extras = getIntent().getExtras();  
+    List&lt;Activity&gt; activities  = extras.getParcelableArrayList(&quot;activities&quot;);
+    ..
+
+}
+</code></pre>
+
+<p>The simplest way of rendering to this list view is to use an off-the-shelf adapter:</p>
+<pre><code class="java">    ArrayAdapter&lt;MyActivity&gt; activitiesAdapter = new ArrayAdapter&lt;MyActivity&gt;(this, android.R.layout.simple_list_item_1, activities);
+    activitiesListView.setAdapter(activitiesAdapter);
+    activitiesAdapter.notifyDataSetChanged();
+</code></pre>
+
+<p>This should display the items as expected. However, they will be still formatted using the toString formatter. Also, is is using 'simple_list_item_1' layout - explained here:</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/3663745/what-is-android-r-layout-simple-list-item-1">http://stackoverflow.com/questions/3663745/what-is-android-r-layout-simple-list-item-1</a></li>
+</ul>
+  </div>
+  <div  class="ui tab segment lab" data-tab="05">
+    <p>Pacemaker#Singleton</p>
+<p>We can introduce an <code>Application</code> object, guaranteed to be a singleton - and accessible to all activities in our application.</p>
+<ul>
+<li><a href="http://developer.android.com/reference/android/app/Application.html">http://developer.android.com/reference/android/app/Application.html</a></li>
+</ul>
+<p>Create a new package called 'org.pacemaker.main' - and introduce this class:</p>
+<pre><code class="java">package org.pacemaker.pacemaker;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Application;
+import android.util.Log;
+
+public class PacemakerApp extends Application
+{
+  public List&lt;MyActivity&gt; actvities = new ArrayList&lt;MyActivity&gt;();
+
+  @Override
+  public void onCreate()
+  {
+    super.onCreate();
+    Log.v(&quot;Pacemaker&quot;, &quot;Pacemaker App Started&quot;);
+  }
+}
+</code></pre>
+
+<p>If an application object is to be created, it must be specified in the manifest <code>AndroidManifst.xml</code></p>
+<pre><code class="xml">    &lt;application
+        android:name=&quot;org.pacemaker.pacemaker.PacemakerApp&quot;
+</code></pre>
+
+<p>Run the app now and make sure the log message appears (once only)</p>
+<p>CreateActivity can now reach for this object when it is created:</p>
+<pre><code class="java">public class CreateActivity extends AppCompatActivity
+{
+  private PacemakerApp app;
+
+  //...
+
+  private ArrayList&lt;MyActivity&gt; activities = new ArrayList&lt;MyActivity&gt;();
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState)
+  {
+    //...
+    app = (PacemakerApp) getApplication();
+    //...
+  }
+  //...
+</code></pre>
+
+<p>.. and we can simplify createActivityButton pressed, removing the parcelable mechanism, and simply adding the activity to the list in the application object:</p>
+<pre><code class="java">  public void createActivityButtonPressed (View view)
+  {
+    double distance = distancePicker.getValue();
+    MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
+
+    app.actvities.add(activity);
+    Log.v(&quot;Pacemaker&quot;, &quot;CreateActivity Button Pressed with &quot; + distance);
+  }
+
+
+  public void listActivityButtonPressed (View view)
+  {
+    Log.v(&quot;Pacemaker&quot;, &quot;List Activityies Button Pressed&quot;);
+    Intent intent = new Intent(this, ActivitiesList.class);
+    startActivity (intent);
+  }
+</code></pre>
+
+<p>ActivitiesList can also be simplified, we just retrieve the application object and the list of activities from that:</p>
+<pre><code class="java">public class ActivitiesList extends AppCompatActivity
+{
+  private PacemakerApp app;
+  private ListView     activitiesListView;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState)
+  {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_activities_list);
+
+    app = (PacemakerApp) getApplication();
+
+    activitiesListView = (ListView) findViewById(R.id.activitiesListView);
+
+    List&lt;MyActivity&gt; activities  = app.actvities;
+
+    ArrayAdapter &lt;MyActivity&gt;activitiesAdapter = new ArrayAdapter&lt;MyActivity&gt;(this, android.R.layout.simple_list_item_1, activities);
+    activitiesListView.setAdapter(activitiesAdapter);
+    activitiesAdapter.notifyDataSetChanged();
+  }
+}
+</code></pre>
+
+<p>This should now work as before. We can also remove the Parcelable methods from the Activity model as we are no longer using them.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="06">
+    <h1>Adapter II</h1>
+<p>The existing adapter we are using in the ActivitiesList class is a stock adapter from the SDK:</p>
+<ul>
+<li><a href="http://developer.android.com/reference/android/widget/ArrayAdapter.html">http://developer.android.com/reference/android/widget/ArrayAdapter.html</a></li>
+</ul>
+<p>We can write our own custom adapter to do the same job:</p>
+<pre><code class="java">class ActivityAdapter extends ArrayAdapter&lt;MyActivity&gt;
+{
+  private Context        context;
+  public  List&lt;MyActivity&gt; activities;
+
+  public ActivityAdapter(Context context, List&lt;MyActivity&gt; activities)
+  {
+    super(context, android.R.layout.simple_list_item_1, activities);
+    this.context   = context;
+    this.activities = activities;
+  }
+
+  @Override
+  public View getView(int position, View convertView, ViewGroup parent)
+  {
+    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    View     view     = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+    MyActivity activity = activities.get(position);
+    TextView textView = (TextView) view.findViewById(android.R.id.text1);
+
+    textView.setText(&quot;&quot; + activity);
+
+    return view;
+  }
+
+  @Override
+  public int getCount()
+  {
+    return activities.size();
+  }
+}
+</code></pre>
+
+<p>Place this in the same source file as ActivitiesList class.</p>
+<p>In the above, we have precise control over how we layout the activity data in each row. We are not using this yet, so our display is still primitive.</p>
+<p>Using this adapter in ActivitiesList.onCreate instead of the library one is straightforward :</p>
+<pre><code class="java">    ActivityAdapter activitiesAdapter = new ActivityAdapter(this,  activities);
+    activitiesListView.setAdapter(activitiesAdapter);
+    activitiesAdapter.notifyDataSetChanged();
+</code></pre>
+
+<p>This should now work as expected.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Exercises">
+    <h1>Solution</h1>
+<p>Archive of lab so far:</p>
+<ul>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V2">https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V2</a></li>
+</ul>
+  </div>
+<script>
+$('.ui.menu .item')
+  .tab({
+    history: true,
+    historyType: 'hash'
+  })
+;
+</script>
+   </div>
+
+
+
+  <br><br>
+  <div class="ui bottom fixed borderless menu">
+    <div class="ui small item">
+    <p id="footertext">
+    Prepared by  Eamonn de Leastar (edeleastar@wit.ie). Except where otherwise noted, this content is licensed under a
+     <a  href="http://creativecommons.org/licenses/by-nc/4.0/" title="External link to http://creativecommons.org/licenses/by-nc/4.0/"
+       target="_blank">Creative Commons Attribution-NonCommercial 4.0 License
+     </a>
+     </p>
+    </div>
+  </div>    <script>
+
+$(document).ready(function()
+{
+  $("img").addClass ("ui image");
+  $('.ui.embed').embed();
+
+  var images = $(".lab img");
+  jQuery.each(images, function(i)  {
+    if((images[i].alt).length > 0)
+    {
+      var div_img = $(document.createElement("div")).addClass("ui segment");
+      $(images[i]).wrap(div_img);
+      var div_label = $(document.createElement("div")).addClass("ui ribbon teal top attached label");
+      div_label.append(images[i].alt);
+      $(div_label).insertBefore(images[i]);
+    }
+  });
+
+
+})    </script>
+
+  </body>
+ </html>
