@@ -116,8 +116,8 @@ h3
       <a class="item" data-tab="08">
         08
       </a>
-      <a class="item" data-tab="Exercises">
-        Exercises
+      <a class="item" data-tab="Solution">
+        Solution
       </a>
     </div>
 </div>
@@ -126,736 +126,613 @@ h3
 
   <div  class="ui tab segment lab" data-tab="Lab-06a">
     <h1>Objectives</h1>
-<ul>
-<li>Extend the pacemaker-service application to incorporate service layer</li>
-<li>Utilize the layer in the pacemaker-android to retrieve a list of current users</li>
-</ul>
+<p>Build a set of views to support signup/login and navigation. Incorporate suitable models. Introduce the Facade pattern to encapsulate Model access.</p>
   </div>
   <div  class="ui tab segment lab" data-tab="01">
     <h1>Setup</h1>
-<p>This is v3 of the pacemaker-android project from the last android lab:</p>
-<ul>
-<li><a href="./archives/pacemaker-android-v3.zip">pacemaker-android-v3.zip</a></li>
-</ul>
-<p>You can import this for reference purposes, or keep working with your own version.</p>
-<h1>Logout Feature</h1>
-<p>Currently the pacemaker-android app does not have an ability for a user to logout. Introduce the following changes to introduce this feature:</p>
-<h2>PacemakerApp</h2>
-<pre><code class="java">public class PacemakerApp extends Application
-{
-  ...
+<p>This is the archive of the las lab:</p>
+<p><a href="https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V2">https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V2</a></p>
+<p>The starting point for this lab is a small evolution on the last lab, can can be downloaded here:</p>
+<p><a href="https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V3">https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V3</a></p>
+<p>This version has  a refactored package structure:</p>
+<p><img alt="" src="img/04.png"></p>
+<p>Also, the adapter is reconfigured to load a layout for each row:</p>
+<p><img alt="" src="img/05.png"></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="02">
+    <h1>Welcome View</h1>
+<p>Design a new activity to look like this:</p>
+<p><img alt="" src="img/00.png"></p>
+<p>You may end up with new entries in the strings.xml file:</p>
+<h2>res/values/strings.xml</h2>
+<pre><code>    &lt;string name=&quot;welcomeLogin&quot;&gt;Login&lt;/string&gt;
+    &lt;string name=&quot;welcomeSignup&quot;&gt;Sign up&lt;/string&gt;
+</code></pre>
 
-  public void logout()
+<p>And this layout:</p>
+<h2>res/layout/activity_welcome.xml</h2>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@+id/RelativeLayout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/welcomeLogin&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_marginTop=&quot;102dp&quot;
+        android:onClick=&quot;loginPressed&quot;
+        android:text=&quot;@string/welcomeLogin&quot; /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/welcomeSignup&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_centerVertical=&quot;true&quot;
+        android:onClick=&quot;signupPressed&quot;
+        android:text=&quot;@string/welcomeSignup&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+  </div>
+  <div  class="ui tab segment lab" data-tab="03">
+    <h1>Signup View</h1>
+<p>Design a new activity to look like this:</p>
+<p><img alt="" src="img/01.png"></p>
+<p>You may end up with new entries in the strings.xml file:</p>
+<h2>res/values/strings.xml</h2>
+<pre><code>    &lt;string name=&quot;signupTitle&quot;&gt;Sign up for the Pacemaker&lt;/string&gt;
+    &lt;string name=&quot;signupSubtitle&quot;&gt;Enter details below&lt;/string&gt;
+    &lt;string name=&quot;signupFirstname&quot;&gt;First name&lt;/string&gt;
+    &lt;string name=&quot;signupLastName&quot;&gt;Last Name&lt;/string&gt;
+    &lt;string name=&quot;signupEmail&quot;&gt;Email&lt;/string&gt;
+    &lt;string name=&quot;signupPassword&quot;&gt;Password&lt;/string&gt;
+    &lt;string name=&quot;signupRegister&quot;&gt;Register&lt;/string&gt;
+</code></pre>
+
+<p>And this layout:</p>
+<h2>res/layout/activity_signup.xml</h2>
+<pre><code class="xml">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:paddingBottom=&quot;@dimen/activity_vertical_margin&quot;
+    android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;
+    android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;
+    android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;
+    tools:context=&quot;org.pacemaker.controllers.Signup&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/signupTitle&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_marginLeft=&quot;32dp&quot;
+        android:layout_marginTop=&quot;28dp&quot;
+        android:text=&quot;@string/signupTitle&quot;
+        android:textAppearance=&quot;?android:attr/textAppearanceMedium&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/signupSubtitle&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/signupTitle&quot;
+        android:layout_below=&quot;@+id/signupTitle&quot;
+        android:layout_marginLeft=&quot;55dp&quot;
+        android:layout_marginTop=&quot;30dp&quot;
+        android:text=&quot;@string/signupSubtitle&quot;
+        android:textAppearance=&quot;?android:attr/textAppearanceSmall&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/firstName&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_below=&quot;@+id/signupSubtitle&quot;
+        android:layout_marginTop=&quot;40dp&quot;
+        android:ems=&quot;10&quot;
+        android:hint=&quot;@string/signupFirstname&quot;
+        android:inputType=&quot;textPersonName&quot;/&gt;
+
+        &lt;requestFocus /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/lastName&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/firstName&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_below=&quot;@+id/firstName&quot;
+        android:ems=&quot;10&quot;
+        android:hint=&quot;@string/signupLastName&quot;
+        android:inputType=&quot;textPersonName&quot; &gt;
+
+    &lt;/EditText&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/Email&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/lastName&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_below=&quot;@+id/lastName&quot;
+        android:ems=&quot;10&quot;
+        android:hint=&quot;@string/signupEmail&quot;
+        android:inputType=&quot;textEmailAddress&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/Password&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/Email&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_below=&quot;@+id/Email&quot;
+        android:ems=&quot;10&quot;
+        android:hint=&quot;@string/signupPassword&quot;
+        android:inputType=&quot;textPassword&quot; /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/register&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentBottom=&quot;true&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_marginBottom=&quot;28dp&quot;
+        android:onClick=&quot;registerPressed&quot;
+        android:text=&quot;@string/signupRegister&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+  </div>
+  <div  class="ui tab segment lab" data-tab="04">
+    <h1>Login View</h1>
+<p>Design a new activity to look like this:</p>
+<p><img alt="" src="img/02.png"></p>
+<p>You may end up with new entries in the strings.xml file:</p>
+<h2>res/values/strings.xml</h2>
+<pre><code>    &lt;string name=&quot;loginTitle&quot;&gt;Login to Donation&lt;/string&gt;
+    &lt;string name=&quot;loginSubtitle&quot;&gt;You must be reigstered&lt;/string&gt;
+    &lt;string name=&quot;loginSignin&quot;&gt;Sign in&lt;/string&gt;
+    &lt;string name=&quot;loginEmail&quot;&gt;Email&lt;/string&gt;
+    &lt;string name=&quot;loginPassword&quot;&gt;Password&lt;/string&gt;
+</code></pre>
+
+<p>And this layout:</p>
+<h2>res/layout/activity_login.xml</h2>
+<pre><code class="xml">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:paddingBottom=&quot;@dimen/activity_vertical_margin&quot;
+    android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;
+    android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;
+    android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;
+    tools:context=&quot;org.pacemaker.controllers.Login&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/loginTitle&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_marginTop=&quot;18dp&quot;
+        android:text=&quot;@string/loginTitle&quot;
+        android:textAppearance=&quot;?android:attr/textAppearanceMedium&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/loginSubtitle&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/loginTitle&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_below=&quot;@+id/loginTitle&quot;
+        android:text=&quot;@string/loginSubtitle&quot;
+        android:textAppearance=&quot;?android:attr/textAppearanceSmall&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/loginEmail&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/loginSubtitle&quot;
+        android:layout_alignRight=&quot;@+id/loginSubtitle&quot;
+        android:layout_below=&quot;@+id/loginSubtitle&quot;
+        android:layout_marginTop=&quot;17dp&quot;
+        android:ems=&quot;10&quot;
+        android:hint=&quot;@string/loginEmail&quot;
+        android:inputType=&quot;textEmailAddress&quot; &gt;
+
+        &lt;requestFocus /&gt;
+    &lt;/EditText&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/loginPassword&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/loginEmail&quot;
+        android:layout_alignRight=&quot;@+id/loginEmail&quot;
+        android:layout_below=&quot;@+id/loginEmail&quot;
+        android:ems=&quot;10&quot;
+        android:hint=&quot;@string/loginPassword&quot;
+        android:inputType=&quot;textPassword&quot; /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/login&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_centerVertical=&quot;true&quot;
+        android:onClick=&quot;signinPressed&quot;        
+        android:text=&quot;@string/loginSignin&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+  </div>
+  <div  class="ui tab segment lab" data-tab="05">
+    <h1>Activity Classes</h1>
+<p>These three classes will load the views we have just created. Place them in the <code>org.pacemaker.conrollers</code> package:</p>
+<h2>Welcome.java</h2>
+<pre><code>package org.pacemaker.controllers;
+
+import org.pacemaker.R;
+import org.pacemaker.main.PacemakerApp;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+public class Welcome extends Activity
+{
+  PacemakerApp app;
+
+  @Override
+  public void onCreate(Bundle savedInstanceState)
   {
-    loggedInUser = null;
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_welcome);
+    app = (PacemakerApp) getApplication();
+  }
+
+  public void loginPressed (View view) 
+  {
+    startActivity (new Intent(this, Login.class));
+  }
+
+  public void signupPressed (View view) 
+  {
+    startActivity (new Intent(this, Signup.class));
+  }
+}
+</code></pre>
+
+<h2>Signup.java</h2>
+<pre><code>package org.pacemaker.controllers;
+
+import org.pacemaker.R;
+import org.pacemaker.main.PacemakerApp;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+public class Signup extends Activity 
+{
+  private PacemakerApp app;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState)
+  {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_signup);
+    app = (PacemakerApp) getApplication();
+  }
+
+  public void registerPressed (View view) 
+  {
+    TextView firstName = (TextView)  findViewById(R.id.firstName);
+    TextView lastName  = (TextView)  findViewById(R.id.lastName);
+    TextView email     = (TextView)  findViewById(R.id.Email);
+    TextView password  = (TextView)  findViewById(R.id.Password);
+
+    startActivity (new Intent(this, Login.class));
+  }
+}
+</code></pre>
+
+<h2>Login.java</h2>
+<pre><code>package org.pacemaker.controllers;
+
+import org.pacemaker.R;
+import org.pacemaker.main.PacemakerApp;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+public class Login extends Activity
+{
+  PacemakerApp app;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState)
+  {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
+  }
+
+  public void signinPressed (View view) 
+  {
+    app = (PacemakerApp) getApplication();
+
+    TextView email     = (TextView)  findViewById(R.id.loginEmail);
+    TextView password  = (TextView)  findViewById(R.id.loginPassword);
+
+    startActivity (new Intent(this, CreateActivity.class));
+  }
+}
+</code></pre>
+  </div>
+  <div  class="ui tab segment lab" data-tab="06">
+    <h1>Manifest</h1>
+<p>These new activities must be registered in the AndroidManifest.xml:</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    package=&quot;org.pacemaker&quot;&gt;
+
+    &lt;application
+        android:name=&quot;.main.PacemakerApp&quot;
+        android:allowBackup=&quot;true&quot;
+        android:icon=&quot;@mipmap/ic_launcher&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:supportsRtl=&quot;true&quot;
+        android:theme=&quot;@style/AppTheme&quot;&gt;
+        &lt;activity
+            android:name=&quot;org.pacemaker.controllers.Welcome&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+        &lt;activity
+            android:name=&quot;org.pacemaker.controllers.Signup&quot;&gt;
+        &lt;/activity&gt;
+        &lt;activity
+            android:name=&quot;org.pacemaker.controllers.Login&quot;&gt;
+        &lt;/activity&gt;
+        &lt;activity
+            android:name=&quot;org.pacemaker.controllers.CreateActivity&quot;&gt;
+        &lt;/activity&gt;
+        &lt;activity
+            android:name=&quot;org.pacemaker.controllers.ActivitiesList&quot;&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+</code></pre>
+
+<p>Note that we have marked the <code>Welcome</code> activity as the on with the <code>intent-filter</code> MAIN</p>
+<p>Run the application now. You should be able to navigate from view to view.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="07">
+    <h1>Models</h1>
+<p>We can introduce a new User class :</p>
+<pre><code class="java">package org.pacemaker.models;
+
+public class User 
+{
+  public Long   id;
+  public String firstname;
+  public String lastname;
+  public String email;
+  public String password;
+
+  public User()
+  {}
+
+  public User(String firstname, String lastname, String email, String password)
+  {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.password = password;
+  } 
+}
+</code></pre>
+
+<p>We already have a list of activities in the PacemakerApp class - we can introduce a map of users alongside it:</p>
+<pre><code class="java">  public List&lt;MyActivity&gt; activities = new ArrayList&lt;MyActivity&gt;();
+  public Map&lt;String, User&gt; users     = new HashMap&lt;String, User&gt;();
+</code></pre>
+
+<p>In Signup, we can create a new entry in this map :</p>
+<pre><code class="java">  public void registerPressed (View view) 
+  {
+    TextView firstName = (TextView)  findViewById(R.id.firstName);
+    TextView lastName  = (TextView)  findViewById(R.id.lastName);
+    TextView email     = (TextView)  findViewById(R.id.Email);
+    TextView password  = (TextView)  findViewById(R.id.Password);
+
+    User user = new User(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString());
+    app.users.put(user.email, user);
+
+    startActivity (new Intent(this, Login.class));
   }
 </code></pre>
 
-<h2>strings.xml</h2>
-<pre><code class="xml">    &lt;string name=&quot;action_logout&quot;&gt;Logout&lt;/string&gt;
-    &lt;string name=&quot;action_create_activities&quot;&gt;Create Activity&lt;/string&gt;
+<p>... and in Login we can validate the user against these entries:</p>
+<pre><code class="java">  public void signinPressed (View view)
+  {
+    app = (PacemakerApp) getApplication();
+
+    TextView email     = (TextView)  findViewById(R.id.loginEmail);
+    TextView password  = (TextView)  findViewById(R.id.loginPassword);
+
+    String emailStr    = email.getText().toString();
+    String passwordStr = password.getText().toString();
+
+    User user = app.users.get(emailStr);
+    if (user != null &amp;&amp; user.password.equals(passwordStr))
+    {
+      startActivity (new Intent(this, CreateActivity.class));
+    }
+    else
+    {
+      Toast toast = Toast.makeText(this, &quot;Invalid Credentials&quot;, Toast.LENGTH_SHORT);
+      toast.show();
+    }
+  }
 </code></pre>
 
-<h2>menu/activities_create.xml</h2>
-<pre><code class="xml">&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; &gt;
+<p>We should be able to register and log in now. And if we provide invalid credentials, we should be kept out.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="08">
+    <h1>Facade</h1>
+<p>There are, of course, some serious problems with our app. The list of activities is not associated with any specific user, the user and activities themselves are not persisted.</p>
+<p>These issues could be tackled piecemeal - in each of the respective views for instance, but we might be more advised strengthen some of the abstractions around user/activity management first.</p>
+<p>This pattern here may be appropriate:</p>
+<ul>
+<li><a href="http://sourcemaking.com/design_patterns/facade">http://sourcemaking.com/design_patterns/facade</a></li>
+</ul>
+<p>Instead of a very exposed set of data structures in PacemakerApp:</p>
+<pre><code class="java">public class PacemakerApp extends Application
+{
+  public List&lt;Activity&gt;    actvities = new ArrayList&lt;Activity&gt;();
+  public Map&lt;String, User&gt; users     = new HashMap&lt;String, User&gt;();
 
-    &lt;item
-        android:id=&quot;@+id/action_settings&quot;
-        android:orderInCategory=&quot;100&quot;
-        android:showAsAction=&quot;never&quot;
-        android:title=&quot;@string/action_settings&quot;/&gt;
-
-    &lt;item
-        android:id=&quot;@+id/action_list_actvities&quot;
-        android:orderInCategory=&quot;100&quot;
-        android:showAsAction=&quot;never&quot;
-        android:title=&quot;@string/action_list_activities&quot;/&gt;
-
-    &lt;item
-        android:id=&quot;@+id/action_logout&quot;
-        android:orderInCategory=&quot;100&quot;
-        android:showAsAction=&quot;never&quot;
-        android:title=&quot;@string/action_logout&quot;/&gt;        
-
-&lt;/menu&gt;
-
+  @Override
+  public void onCreate()
+  {
+    super.onCreate();
+    Log.v(&quot;Pacemaker&quot;, &quot;Pacemaker App Started&quot;);
+  }
+}
 </code></pre>
 
-<h2>menu/activities_list.xml</h2>
-<pre><code class="xml">&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; &gt;
+<p>We could remodel this class to provide a encapsulated perspective - a Facade - to the these models:</p>
+<pre><code class="java">public class PacemakerApp extends Application
+{
+  private List&lt;MyActivity&gt; activities = new ArrayList&lt;MyActivity&gt;();
+  public  Map&lt;String, User&gt; users     = new HashMap&lt;String, User&gt;();
+  private User              loggedInUser;
 
-    &lt;item
-        android:id=&quot;@+id/action_settings&quot;
-        android:orderInCategory=&quot;100&quot;
-        android:showAsAction=&quot;never&quot;
-        android:title=&quot;@string/action_settings&quot;/&gt;
+  public void registerUser(User user)
+  {
+    users.put(user.email, user);
+  }
 
-    &lt;item
-        android:id=&quot;@+id/action_create_actvities&quot;
-        android:orderInCategory=&quot;100&quot;
-        android:showAsAction=&quot;never&quot;
-        android:title=&quot;@string/action_create_activities&quot;/&gt;
+  public boolean loginUser(String email, String password)
+  {
+    loggedInUser = users.get(email);
+    if (loggedInUser != null &amp;&amp; !loggedInUser.password.equals(password))
+    {
+      loggedInUser = null;
+    }
+    return loggedInUser != null;
+  }
 
-    &lt;item
-        android:id=&quot;@+id/action_logout&quot;
-        android:orderInCategory=&quot;100&quot;
-        android:showAsAction=&quot;never&quot;
-        android:title=&quot;@string/action_logout&quot;/&gt;        
+  public void createActivity (MyActivity activity)
+  {
+    activities.add(activity);
+  }
 
-&lt;/menu&gt;
+  public List&lt;MyActivity&gt; getActivities()
+  {
+    return activities;
+  }
+
+  @Override
+  public void onCreate()
+  {
+    super.onCreate();
+    Log.v(&quot;Pacemaker&quot;, &quot;Pacemaker App Started&quot;);
+  }
+}
+</code></pre>
+
+<p>This will require a refactoring of most of the controllers:</p>
+<h2>Signup</h2>
+<pre><code class="java">  public void registerPressed (View view) 
+  {
+    TextView firstName = (TextView)  findViewById(R.id.firstName);
+    TextView lastName  = (TextView)  findViewById(R.id.lastName);
+    TextView email     = (TextView)  findViewById(R.id.Email);
+    TextView password  = (TextView)  findViewById(R.id.Password);
+
+    User user = new User(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString());
+    app.registerUser(user);
+
+    startActivity (new Intent(this, Login.class));
+  }
+</code></pre>
+
+<h2>Login</h2>
+<pre><code class="java">  public void signinPressed (View view)
+  {
+    app = (PacemakerApp) getApplication();
+
+    TextView email     = (TextView)  findViewById(R.id.loginEmail);
+    TextView password  = (TextView)  findViewById(R.id.loginPassword);
+
+    boolean loggedIn = app.loginUser(email.getText().toString(), password.getText().toString());
+    if (loggedIn)
+    {
+      startActivity (new Intent(this, CreateActivity.class));
+    }
+    else
+    {
+      Toast toast = Toast.makeText(this, &quot;Invalid Credentials&quot;, Toast.LENGTH_SHORT);
+      toast.show();
+    }
 </code></pre>
 
 <h2>CreateActivity</h2>
-<pre><code class="java">  @Override
-  public boolean onOptionsItemSelected(MenuItem item)
+<pre><code class="java">  public void createActivityButtonPressed (View view)
   {
-    switch (item.getItemId())
-    {
-      case R.id.action_list_actvities : startActivity (new Intent(this, ActivitiesList.class));
-                                        break;                            
-      case R.id.action_logout         : startActivity (new Intent(this, Welcome.class));
-                                        break;     
+    double distance = distancePicker.getValue();
+    MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
 
-    }
-    return true;
+    app.createActivity(activity);
+    Log.v(&quot;Pacemaker&quot;, &quot;CreateActivity Button Pressed with &quot; + distance);
   }
 </code></pre>
 
 <h2>ActivitiesList</h2>
 <pre><code class="java">  @Override
-  public boolean onOptionsItemSelected(MenuItem item)
-  {
-    switch (item.getItemId())
-    {
-      case R.id.action_create_actvities : startActivity (new Intent(this, CreateActivity.class));
-                                          break;                            
-      case R.id.action_logout           : startActivity (new Intent(this, Welcome.class));
-                                          break;     
-    }
-    return true;
-  }
-</code></pre>
-  </div>
-  <div  class="ui tab segment lab" data-tab="02">
-    <h1>Seperated Activities by User</h1>
-<p>Currently a single list of activities is maintained, regardless of which user is logged on. We can easily refactor this by altering the data structure as follows:</p>
-<h2>PacemakerApp</h2>
-<pre><code class="java">  private Map&lt;String, List&lt;Activity&gt;&gt; activities    = new HashMap&lt;String, List&lt;Activity&gt;&gt;();
-</code></pre>
-
-<pre><code class="java">  public void registerUser(User user)
-  {
-    users.put(user.email, user);
-    activities.put(user.email, new ArrayList&lt;Activity&gt;());
-  }
-</code></pre>
-
-<pre><code class="java">  public void createActivity (Activity activity)
-  {
-    if (loggedInUser != null)
-    {
-      List&lt;Activity&gt; usersActivities = activities.get(loggedInUser.email);
-      activities.put(loggedInUser.email, usersActivities);
-      usersActivities.add(activity);
-    }
-  }
-
-  public List&lt;Activity&gt; getActivities()
-  {
-    List&lt;Activity&gt; usersActivities = null;
-    if (loggedInUser != null)
-    {
-     usersActivities = activities.get(loggedInUser.email);
-    }
-    return usersActivities;
-  }
-</code></pre>
-  </div>
-  <div  class="ui tab segment lab" data-tab="03">
-    <h1>JSON Parser Library</h1>
-<p>If we wish to build a service layer into pacemaker-service, then we need an agreed data format for exchanging objects. JSON is the accepted format for the style of interface we are proposing.</p>
-<p>We need to extend the pacemaker-service project as follows:</p>
-<h2>pacemakerplay Project:</h2>
-<h3>build.sbt</h3>
-<p>This is the build configuration for the application, which extend to incorporate the json library we have selected:</p>
-<pre><code>name := &quot;pacemakerplay&quot;
-
-version := &quot;1.0-SNAPSHOT&quot;
-
-libraryDependencies ++= Seq(
-  javaJdbc,
-  javaEbean,
-  cache,
-  &quot;net.sf.flexjson&quot; % &quot;flexjson&quot; % &quot;3.1&quot;
-)     
-
-play.Project.playJavaSettings
-</code></pre>
-
-<p>The project will need to be rebuilt, and the eclipise view regenerated:</p>
-<pre><code>play
-compile
-eclipse
-</code></pre>
-
-<h2>pacemaker-android</h2>
-<p>The Android project will need to use the same library:</p>
-<p>Copy:</p>
-<ul>
-<li><a href="./archives/flexjson-3.1.jar">flexjson-3.1.jar</a></li>
-</ul>
-<p>to 'lib' folder and add to build path.</p>
-<h1>JSon Parser Classes</h1>
-<p>Both projects can use the same serializers. Place this class in 'the models' package in both projects:</p>
-<pre><code>import java.util.ArrayList;
-import java.util.List;
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-
-public class JsonParser
-{
-  public static JSONSerializer userSerializer     = new JSONSerializer().exclude(&quot;class&quot;)
-                                                                        .exclude(&quot;persistent&quot;)
-                                                                        .exclude(&quot;entityId&quot;); 
-  public static JSONSerializer activitySerializer = new JSONSerializer().exclude(&quot;class&quot;)
-                                                                        .exclude(&quot;persistent&quot;)
-                                                                        .exclude(&quot;entityId&quot;); 
-
-  public static User json2User(String json)
-  {
-    return new JSONDeserializer&lt;User&gt;().deserialize(json, User.class); 
-  }
-
-  public static List&lt;User&gt; json2Users(String json)
-  {
-    return new JSONDeserializer&lt;ArrayList&lt;User&gt;&gt;().use(&quot;values&quot;, User.class)
-                                                  .deserialize(json);
-  }
-
-  public static String user2Json(Object obj)
-  {
-    return userSerializer.serialize(obj);
-  }
-
-  public static Activity json2Activity(String json)
-  {
-    Activity activity = new JSONDeserializer&lt;Activity&gt;().deserialize(json,   Activity.class);
-    return activity;
-  }
-
-  public static String activity2Json(Object obj)
-  {
-    return activitySerializer.serialize(obj);
-  }
-
-  public static  List&lt;Activity&gt; json2Activities (String json)
-  {
-    return new JSONDeserializer&lt;ArrayList&lt;Activity&gt;&gt;().use(&quot;values&quot;, Activity.class).deserialize(json);
-  }   
-}
-</code></pre>
-  </div>
-  <div  class="ui tab segment lab" data-tab="04">
-    <h1>pacemakerplay API</h1>
-<p>We now define the API proper in pacemaker-service"</p>
-<h2>Routes</h2>
-<pre><code># API
-
-GET     /api/users                                 controllers.PacemakerAPI.users()
-DELETE  /api/users                                 controllers.PacemakerAPI.deleteAllUsers()
-POST    /api/users                                 controllers.PacemakerAPI.createUser()
-
-GET    /api/users/:id                              controllers.PacemakerAPI.user(id: Long)
-DELETE /api/users/:id                              controllers.PacemakerAPI.deleteUser(id: Long)
-PUT    /api/users/:id                              controllers.PacemakerAPI.updateUser(id: Long)
-
-GET     /api/users/:userId/activities              controllers.PacemakerAPI.activities(userId: Long)
-POST    /api/users/:userId/activities              controllers.PacemakerAPI.createActivity(userId: Long)
-
-GET     /api/users/:userId/activities/:activityId  controllers.PacemakerAPI.activity(userId: Long, activityId:Long)
-DELETE  /api/users/:userId/activities/:activityId  controllers.PacemakerAPI.deleteActivity(userId: Long, activityId:Long)
-PUT     /api/users/:userId/activities/:activityId  controllers.PacemakerAPI.updateActivity(userId: Long, activityId:Long)
-</code></pre>
-
-<h2>PacemakerAPI</h2>
-<pre><code class="java">package controllers;
-
-import static models.JsonParser.*;
-import java.util.List;
-import models.Activity;
-import models.User;
-import play.mvc.Controller;
-import play.mvc.Result;
-
-public class PacemakerAPI extends Controller
-{  
-
-  public static Result  users()
-  {
-    List&lt;User&gt; users = User.findAll();
-    return ok(user2Json(users));
-  }
-
-  public static Result user(Long id)
-  {
-    User user = User.findById(id);  
-    return user==null? notFound() : ok(user2Json(user)); 
-  }
-
-  public static Result createUser()
-  {
-    User user = json2User(request().body().asJson().toString());
-    user.save();
-    return ok(user2Json(user));
-  }
-
-  public static Result deleteUser(Long id)
-  {
-    Result result = notFound();
-    User user = User.findById(id);
-    if (user != null)
-    {
-      user.delete();
-      result = ok();
-    }
-    return result;
-  }
-
-  public static Result deleteAllUsers()
-  {
-    User.deleteAll();
-    return ok();
-  }
-
-  public static Result updateUser(Long id)
-  {
-    Result result = notFound();
-    User user = User.findById(id);
-    if (user != null)
-    {
-      User updatedUser = json2User(request().body().asJson().toString());
-      user.update(updatedUser);
-      user.save();
-      result = ok(user2Json(user));
-    }
-    return result;
-  }
-
-  public static Result activities (Long userId)
-  {  
-    User p = User.findById(userId);
-    return ok(activity2Json(p.activities));
-  }
-
-  public static Result createActivity (Long userId)
-  { 
-    User    user      = User.findById(userId);
-    Activity activity = json2Activity(request().body().asJson().toString());  
-
-    user.activities.add(activity);
-    user.save();
-
-    return ok(activity2Json(activity));
-  }
-
-  public static Result activity (Long userId, Long activityId)
-  {  
-    User    user      = User.findById(userId);
-    Activity activity = Activity.findById(activityId);
-
-    if (activity == null)
-    {
-      return notFound();
-    }
-    else
-    {
-      return user.activities.contains(activity)? ok(activity2Json(activity)): badRequest();
-    }
-  }  
-
-  public static Result deleteActivity (Long userId, Long activityId)
-  {  
-    User    user      = User.findById(userId);
-    Activity activity = Activity.findById(activityId);
-    if (activity == null)
-    {
-      return notFound();
-    }
-    else
-    {
-      if (user.activities.contains(activity))
-      {
-        user.activities.remove(activity);
-        activity.delete();
-        user.save();
-        return ok();
-      }
-      else
-      {
-        return badRequest();
-      }
-
-    }
-  }  
-
-  public static Result updateActivity (Long userId, Long activityId)
-  {
-    User    user      = User.findById(userId);
-    Activity activity = Activity.findById(activityId);
-    if (activity == null)
-    {
-      return notFound();
-    }
-    else
-    {
-      if (user.activities.contains(activity))
-      {
-        Activity updatedActivity = json2Activity(request().body().asJson().toString());
-        activity.distance = updatedActivity.distance;
-        activity.location = updatedActivity.location;
-        activity.kind     = updatedActivity.kind;
-
-        activity.save();
-        return ok(activity2Json(updatedActivity));
-      }
-      else
-      {
-        return badRequest();
-      }
-    }
-  }  
-}
-</code></pre>
-  </div>
-  <div  class="ui tab segment lab" data-tab="05">
-    <h1>Testing pacemakerplay API</h1>
-<h1>Testing</h1>
-<p>Make sure the app is running, and browse to :</p>
-<ul>
-<li><a href="http://localhost:9000/api/users">http://localhost:9000/api/users</a></li>
-</ul>
-<p>Viewing the page source, you should see:</p>
-<pre><code>[]
-</code></pre>
-
-<p>Also, if using chrome, keep an eye on the actual http traffic (via Tools menu -&gt;Developers Tools):</p>
-<p><img alt="" src="img/00.png"></p>
-<p>Try browsing to this url:</p>
-<ul>
-<li><a href="http://localhost:9000/api/users/1">http://localhost:9000/api/users/1</a></li>
-</ul>
-<p>The browser will be blank, however, the developer tools should display the actual response:</p>
-<p><img alt="" src="img/01.png"></p>
-<p>This reveals a '404' not found error.</p>
-<p>More comprehensive tools for testing http interfaces are available. Search for the Chrome 'Postman REST Client' - and install as a chrome app on your workstation. Using Postman, experiment with the two links we tested above:</p>
-<p><img alt="" src="img/02.png"></p>
-<p>Now try to replicate the request as shown below (note the `Headers' Content-Type set to 'application/json':</p>
-<p><img alt="" src="img/03.png"></p>
-<p>When you press 'Send' you may see this response:</p>
-<p><img alt="" src="img/04.png"></p>
-<p>No try this request again:</p>
-<ul>
-<li><a href="http://localhost:9000/api/users/1">http://localhost:9000/api/users/1</a></li>
-</ul>
-<p>In the above interchange, we have use the REST interface to create a User, and then subsequently get the user (by the id 1).</p>
-<p>Create a few more users and verify that you can get them. See if you can also do the following:</p>
-<ul>
-<li>Delete (via a DELETE) request</li>
-<li>Update (via a PUT) request.</li>
-</ul>
-<p>Also, examine the database via the h2-console, and see if you can verify if the 'my_users' table is being updated.</p>
-  </div>
-  <div  class="ui tab segment lab" data-tab="06">
-    <h1>pacemaker-android HTTP package</h1>
-<p>We need new package of classes in the android application to converse with the pacemaker-service app:</p>
-<p>Create a new package called 'org.pacemaker.http', and incorporate these classes:</p>
-<pre><code class="java">package org.pacemaker.http;
-
-import java.util.List;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
-
-@SuppressWarnings(&quot;rawtypes&quot;)
-public abstract class Request extends AsyncTask&lt;Object, Void, Object&gt;
-{
-  public Response         responder;
-  public ProgressDialog   dialog;
-  public Context          context;
-  public String           message;
-  public Exception        error;
-
-  public Request(Context context, Response responder, String message)
-  {
-    this.responder = responder;
-    this.context = context;
-    this.message = message;
-  }
-
-  @Override
-  protected void onPreExecute()
-  {
-    super.onPreExecute();
-    this.dialog = new ProgressDialog(context, 1);
-    this.dialog.setMessage(message);
-    this.dialog.show();
-  }
-
-  @Override
-  protected  Object doInBackground(Object... params)
-  {
-    error = null;
-    try
-    {
-      return doRequest(params);
-    }
-    catch (Exception e)
-    {
-      error = e;
-    }
-    return null;
-  }
-
-  protected abstract  Object doRequest(Object... params) throws Exception;
-
-  @SuppressWarnings(&quot;unchecked&quot;)
-  @Override
-  protected void onPostExecute(Object result)
-  {
-    super.onPostExecute(result);
-    if (dialog.isShowing())
-    {
-      dialog.dismiss();
-    }
-    if (error != null)
-    {
-      responder.errorOccurred(error);  
-    }
-    else
-    {
-      if (result instanceof List)
-      {
-        responder.setResponse((List)result);
-      }
-      else
-      {
-        responder.setResponse(result);
-      }
-    }
-  } 
-}
-</code></pre>
-
-<pre><code>package org.pacemaker.http;
-
-import java.util.List;
-
-public interface Response&lt;T&gt;
-{
-  public void setResponse(List&lt;T&gt; aList);
-  public void setResponse(T anObject);
-  public void errorOccurred (Exception e);
-}
-</code></pre>
-
-<pre><code>package org.pacemaker.http;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
-public class Rest
-{
-  private static DefaultHttpClient httpClient = null;
-  private static final String URL = &quot;http://10.0.2.2:9000&quot;;
-
-  private static DefaultHttpClient httpClient()
-  {
-    if (httpClient == null)
-    {
-      HttpParams httpParameters = new BasicHttpParams();
-      HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-      HttpConnectionParams.setSoTimeout(httpParameters, 10000);
-      httpClient = new DefaultHttpClient(httpParameters);
-    }
-    return httpClient;
-  }
-
-  public static String get(String path) throws Exception
-  {
-    HttpGet getRequest = new HttpGet(URL + path);
-    getRequest.setHeader(&quot;accept&quot;, &quot;application/json&quot;);
-    HttpResponse response = httpClient().execute(getRequest);
-    return new BasicResponseHandler().handleResponse(response);
-  }
-
-  public static String delete(String path) throws Exception
-  {
-    HttpDelete deleteRequest = new HttpDelete(URL + path);
-    HttpResponse response = httpClient().execute(deleteRequest);
-    return new BasicResponseHandler().handleResponse(response);
-  }
-
-  public static String put(String path, String json) throws Exception
-  {
-    HttpPut putRequest = new HttpPut(URL + path);
-    putRequest.setHeader(&quot;Content-type&quot;, &quot;application/json&quot;);
-    putRequest.setHeader(&quot;accept&quot;, &quot;application/json&quot;);
-
-    StringEntity s = new StringEntity(json);
-    s.setContentEncoding(&quot;UTF-8&quot;);
-    s.setContentType(&quot;application/json&quot;);
-    putRequest.setEntity(s);
-
-    HttpResponse response = httpClient().execute(putRequest);
-    return new BasicResponseHandler().handleResponse(response);
-  }
-
-  public static String post(String path, String json) throws Exception
-  {
-    HttpPost putRequest = new HttpPost(URL + path);
-    putRequest.setHeader(&quot;Content-type&quot;, &quot;application/json&quot;);
-    putRequest.setHeader(&quot;accept&quot;, &quot;application/json&quot;);
-
-    StringEntity s = new StringEntity(json);
-    s.setContentEncoding(&quot;UTF-8&quot;);
-    s.setContentType(&quot;application/json&quot;);
-    putRequest.setEntity(s);
-
-    HttpResponse response = httpClient().execute(putRequest);
-    return new BasicResponseHandler().handleResponse(response);
-  }
-}
-</code></pre>
-  </div>
-  <div  class="ui tab segment lab" data-tab="07">
-    <h1>PacemakerAPI Client</h1>
-<p>Create a new class in the 'org.pacemaker.main' package to encapsulate API access:</p>
-<pre><code class="java">package org.pacemaker.main;
-
-import java.util.List;
-import org.pacemaker.http.Request;
-import org.pacemaker.http.Response;
-import org.pacemaker.http.Rest;
-import org.pacemaker.models.JsonParser;
-import org.pacemaker.models.User;
-import android.content.Context;
-
-public class PacemakerAPI
-{
-  public static void getUsers(Context context, Response&lt;User&gt; response, String dialogMesssage)
-  {
-    new GetUsers(context, response, dialogMesssage).execute();
-  }
-
-  public static void createUser(Context context, Response&lt;User&gt; response, String dialogMesssage, User user)
-  {
-    new CreateUser(context, response, dialogMesssage).execute(user);
-  }
-}
-
-class GetUsers extends Request
-{
-  public GetUsers(Context context, Response&lt;User&gt; callback, String message)
-  {
-    super(context, callback, message);
-  }
-
-  @Override
-  protected List&lt;User&gt; doRequest(Object... params) throws Exception
-  {
-    String response = Rest.get(&quot;/api/users&quot;);
-    List&lt;User&gt; userList = JsonParser.json2Users(response);
-    return userList;
-  }
-}
-
-class CreateUser extends Request
-{
-  public CreateUser(Context context, Response&lt;User&gt; callback, String message)
-  {
-    super(context, callback, message);
-  }
-
-  @Override
-  protected User doRequest(Object... params) throws Exception
-  {
-    String response = Rest.post(&quot;/api/users&quot;, JsonParser.user2Json(params[0]));
-    return JsonParser.json2User(response);
-  }
-}
-</code></pre>
-  </div>
-  <div  class="ui tab segment lab" data-tab="08">
-    <h1>Connect</h1>
-<p>In order to use network access from android, you will need to specifically enable it in the android manifest:</p>
-<h2>AndroidManifest.xml</h2>
-<pre><code>    &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
-</code></pre>
-
-<h2>Welcome Activity</h2>
-<p>We can now retrieve the users list from the welcome activity:</p>
-<pre><code>  public void onCreate(Bundle savedInstanceState)
+  protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_welcome);
+    setContentView(R.layout.activity_activities_list);
+
     app = (PacemakerApp) getApplication();
-    PacemakerAPI.getUsers(this, app, &quot;Retrieving list of users&quot;);
+
+    activitiesListView = (ListView) findViewById(R.id.activitiesListView);
+
+    List&lt;MyActivity&gt; activities  = app.getActivities();
+
+    ActivityAdapter activitiesAdapter = new ActivityAdapter(this,  activities);
+    activitiesListView.setAdapter(activitiesAdapter);
+    activitiesAdapter.notifyDataSetChanged();
   }
+}
 </code></pre>
 
-<p>Note that the second paramater in the above - <code>app</code> - must implement the Response interface:</p>
-<h2>PacemakerApp</h2>
-<pre><code class="java">public class PacemakerApp extends Application implements Response&lt;User&gt;
-{
-  private Map&lt;String, User&gt;           users         = new HashMap&lt;String, User&gt;();
-  private Map&lt;String, List&lt;Activity&gt;&gt; activities    = new HashMap&lt;String, List&lt;Activity&gt;&gt;();
-  private User                        loggedInUser;
-  private boolean                     connected     = false;
-
-  @Override
-  public void setResponse(List&lt;User&gt; aList)
-  {
-    connected = true;
-    for (User user : aList)
-    {
-      users.put(user.email, user);
-    }
-  }
-
-  @Override
-  public void setResponse(User anObject)
-  {
-    connected = true;
-  }
-
-  @Override
-  public void errorOccurred(Exception e)
-  {
-    connected = false;
-    Toast toast = Toast.makeText(this, &quot;Failed to connect to Pacemaker Service&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-</code></pre>
+<p>This should work now as expected.</p>
   </div>
-  <div  class="ui tab segment lab" data-tab="Exercises">
-    <h1>Exercises</h1>
+  <div  class="ui tab segment lab" data-tab="Solution">
+    <h1>Archive</h1>
 <p>Archive of the app so far:</p>
 <ul>
-<li><a href="./archives/pacemaker-android-v4.zip">pacemaker-android-v4.zip</a></li>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V4">https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V4</a></li>
 </ul>
-<h2>Exercise 1: Users</h2>
-<p>Currently PacemakerApp.registerUser creates a local User object, and has no impact on the server. Change this such that, when registering a new user, the user object is created on the server.</p>
-<h2>Exercise 2: Activities</h2>
-<p>PacemakerApp.getActivities and PacemakerApp.createActivities are still just working with the local copies. Rework these such that they are creating/retreiving activities to/from the pacemakerplay service.</p>
   </div>
 <script>
 $('.ui.menu .item')

@@ -113,6 +113,9 @@ h3
       <a class="item" data-tab="07">
         07
       </a>
+      <a class="item" data-tab="08">
+        08
+      </a>
       <a class="item" data-tab="Exercises">
         Exercises
       </a>
@@ -123,687 +126,495 @@ h3
 
   <div  class="ui tab segment lab" data-tab="Lab-06b">
     <h1>Objectives</h1>
-<ul>
-<li>Complete the android application to include activity sync support</li>
-</ul>
+<p>Retrieve a list of users from a remote REST service. Implement this using the using the Half Sync/Half Async Pattern.</p>
   </div>
   <div  class="ui tab segment lab" data-tab="01">
     <h1>Setup</h1>
+<h2>Android Pacemaker Client</h2>
 <p>This is v4 of the pacemaker-android project from the last android lab:</p>
 <ul>
-<li><a href="./archives/pacemaker-android-v4.zip">pacemaker-android-v4.zip</a></li>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V4">https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V4</a></li>
 </ul>
-<p>You can import this for reference purposes, or keep working with your own version.</p>
+<p>You can import this project, or keep working with your own version.</p>
+<h2>Pacemaker Web Service</h2>
+<p>This is a version of the pacemaker-service from the Agile Software Module:</p>
+<ul>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-service">https://github.com/wit-design-patterns-2016/pacemaker-service</a></li>
+</ul>
+<p>This project was evolved over these labs:</p>
+<ul>
+<li><a href="http://edeleastar.github.io/agile-software-dev/topic08/book/index.html">Lab08</a></li>
+<li><a href="http://edeleastar.github.io/agile-software-dev/topic09/book/index.html">Lab09</a></li>
+<li><a href="http://edeleastar.github.io/agile-software-dev/topic10/book/index.html">Lab10</a></li>
+<li><a href="http://edeleastar.github.io/agile-software-dev/topic11/book/index.html">Lab11</a></li>
+</ul>
+<p>To run the project, download and install the Play Framework Version 2.2.6:</p>
+<ul>
+<li><a href="https://www.playframework.com/download#older-versions">https://www.playframework.com/download#older-versions</a></li>
+</ul>
+<p>Then download this release of pacemaker-service:</p>
+<ul>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-service/releases/tag/V2">https://github.com/wit-design-patterns-2016/pacemaker-service/releases/tag/V2</a></li>
+</ul>
+<p>Run a shell inside the project folder and enter this command:</p>
+<pre><code>play run
+</code></pre>
+
+<p><img alt="" src="img/05.png"></p>
+<p>The service should be available on:</p>
+<ul>
+<li><a href="http://localhost:9000">http://localhost:9000</a></li>
+</ul>
   </div>
   <div  class="ui tab segment lab" data-tab="02">
-    <h1>Registering new Users</h1>
-<p>We need re-orient how we connect to the service, initiating contact with the service form the welcome activity:</p>
-<h2>Welcome</h2>
-<pre><code class="java">  public void onCreate(Bundle savedInstanceState)
-  {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_welcome);
-    app = (PacemakerApp) getApplication();
-    app.connectToPacemakerAPI(this);
-  }
-</code></pre>
-
-<p>This approach requires these methods in PacemakerApp:</p>
-<pre><code class="java">  public void connectToPacemakerAPI(Context context)
-  {
-    PacemakerAPI.getUsers(context, this, &quot;Retrieving list of users&quot;);
-  }
-
-  public void registerUser(Context context, User user)
-  {
-    PacemakerAPI.createUser(context, this, &quot;Registering new user&quot;, user);
-  }
-
-  @Override
-  public void setResponse(User user)
-  {
-    connected = true;
-    users.put(user.email, user);
-    activities.put(user.email, new ArrayList&lt;Activity&gt;());
-  }
-</code></pre>
-
-<p>In addition, the Sigup controller is also using the application object:</p>
-<h2>Signup</h2>
-<pre><code class="java">    app.registerUser(this, user);
-</code></pre>
+    <h1>Pacemaker-service</h1>
+<p>You can register a new user, log in and upload an activity.</p>
+<ul>
+<li><a href="http://localhost:9000">http://localhost:9000</a></li>
+</ul>
+<p><img alt="" src="img/06.png">
+<img alt="" src="img/10.png">
+<img alt="" src="img/07.png">
+<img alt="" src="img/08.png">
+<img alt="" src="img/09.png"></p>
+<p>The service also exposes REST endpoints:</p>
+<ul>
+<li><a href="http://localhost:9000/api/users">http://localhost:9000/api/users</a></li>
+<li><a href="http://localhost:9000/api/users/5">http://localhost:9000/api/users/5</a></li>
+<li><a href="http://localhost:9000/api/users/5/activities">http://localhost:9000/api/users/5/activities</a></li>
+</ul>
+<p>(this data is preloaded in the app).</p>
+<p><img alt="" src="img/11.png">
+<img alt="" src="img/12.png">
+<img alt="" src="img/13.png"></p>
   </div>
   <div  class="ui tab segment lab" data-tab="03">
-    <h1>Creating Activities</h1>
-<p>Extend PacemakerAPI to support activities:</p>
-<h2>PacemakerAPI</h2>
-<pre><code class="java">public class PacemakerAPI
-{
-  //...
-  public static void getActivities(Context context, User user, Response&lt;Activity&gt; response, String dialogMesssage)
-  {
-    new GetActivities(context, user, response, dialogMesssage).execute();
-  }
-
-  public static void createActivity(Context context, User user, Response&lt;Activity&gt; response, String dialogMesssage, Activity donation)
-  {
-    new CreateActivity(context, user, response, dialogMesssage).execute(donation);
-  }
-}
-
-//...
-
-class GetActivities extends Request
-{
-  private User user;
-
-  public GetActivities(Context context, User user, Response&lt;Activity&gt; callback, String message)
-  {
-    super(context, callback, message);
-    this.user = user;
-  }
-
-  @Override
-  protected List&lt;Activity&gt; doRequest(Object... params) throws Exception
-  {
-    String response =  Rest.get(&quot;/api/users/&quot; + user.id + &quot;/activities&quot;);
-    List&lt;Activity&gt; ActivityList = JsonParser.json2Activities(response);
-    return ActivityList;
-  }
-}
-
-class CreateActivity extends Request
-{
-  private User user;
-
-  public CreateActivity(Context context, User user, Response&lt;Activity&gt; callback, String message)
-  {
-    super(context, callback, message);
-    this.user = user;
-  }
-
-  @Override
-  protected Activity doRequest(Object... params) throws Exception
-  {
-    String response = Rest.post (&quot;/api/users/&quot; + user.id + &quot;/activities&quot;, JsonParser.activity2Json(params[0]));
-    return JsonParser.json2Activity(response);
-  }
-}
+    <h1>Separated Activities by User</h1>
+<p>Back in the Android project..</p>
+<p>Currently a single list of activities is maintained, regardless of which user is logged on. We can easily refactor this by altering the data structure as follows:</p>
+<h2>PacemakerApp</h2>
+<pre><code class="java">  private Map&lt;String, List&lt;MyActivity&gt;&gt; activities    = new HashMap&lt;String, List&lt;MyActivity&gt;&gt;();
 </code></pre>
 
-<p>We now encapsulate access to this feature in the application class:</p>
-<h2>PacemakerApp</h2>
-<pre><code class="java">  public void createActivity (Context context, Activity activity, Response&lt;Activity&gt; responder)
+<pre><code class="java">  public void registerUser(User user)
+  {
+    users.put(user.email, user);
+    activities.put(user.email, new ArrayList&lt;MyActivity&gt;());
+  }
+</code></pre>
+
+<pre><code class="java">  public void createActivity (MyActivity activity)
   {
     if (loggedInUser != null)
     {
-      PacemakerAPI.createActivity(context, loggedInUser, responder, &quot;Creating activity...&quot;, activity);
+      List&lt;MyActivity&gt; usersActivities = activities.get(loggedInUser.email);
+      activities.put(loggedInUser.email, usersActivities);
+      usersActivities.add(activity);
     }
   }
 
-  public void getActivities(Context context, Response&lt;Activity&gt; responder)
+  public List&lt;MyActivity&gt; getActivities()
   {
-    PacemakerAPI.getActivities(context, loggedInUser, responder, &quot;Retrieving Activities...&quot;);
+    List&lt;MyActivity&gt; usersActivities = null;
+    if (loggedInUser != null)
+    {
+      usersActivities = activities.get(loggedInUser.email);
+    }
+    return usersActivities;
   }
 </code></pre>
   </div>
   <div  class="ui tab segment lab" data-tab="04">
-    <h1>Controllers</h1>
-<p>The activities list controller can now retrieve/update activities from the service</p>
-<h2>ActivitiesList</h2>
-<pre><code class="java">public class ActivitiesList extends  android.app.Activity implements Response &lt;Activity&gt;
-{
-  private PacemakerApp     app;
-  private ListView         activitiesListView;
-  private ActivityAdapter  activitiesAdapter;
-  private List&lt;Activity&gt;   activities = new ArrayList&lt;Activity&gt;();
+    <h1>JSON &amp; HTTP Libraries</h1>
+<p>The pacemaker-service project is using the following libraries in its REST implementation:</p>
+<ul>
+<li><a href="https://hc.apache.org">https://hc.apache.org</a></li>
+<li><a href="https://sourceforge.net/projects/flexjson/">https://sourceforge.net/projects/flexjson/</a></li>
+</ul>
+<p>To keep our implementation reasonably simple we will incorporate these libraries directly into our Android project.</p>
+<p>Library download and integration is just a matter of the correct Gradle entries:</p>
+<h2>build.gradle</h2>
+<pre><code>android {
+    useLibrary 'org.apache.http.legacy'
+}
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState)
-  {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activities_list);
-
-    app = (PacemakerApp) getApplication();
-
-    activitiesListView = (ListView) findViewById(R.id.activitiesListView);
-    activitiesAdapter = new ActivityAdapter(this,  activities);
-    activitiesListView.setAdapter(activitiesAdapter);
-
-    app.getActivities(this, this);
-  }
-
-
-  @Override
-  public void setResponse(List&lt;Activity&gt; aList)
-  {
-    activitiesAdapter.activities = aList;
-    activitiesAdapter.notifyDataSetChanged();
-  }
-
-  @Override
-  public void setResponse(Activity anObject)
-  {
-  }
-
-  @Override
-  public void errorOccurred(Exception e)
-  {
-    Toast toast = Toast.makeText(this, &quot;Error Retrieving Activities...&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-  //...
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
+    compile 'net.sf.flexjson:flexjson:3.2'
 }
 </code></pre>
 
-<p>Similiarly, we can create an activity using the new features on the app class:</p>
-<h2>CreateActivity</h2>
-<pre><code class="java">public class CreateActivity extends android.app.Activity implements Response &lt;Activity&gt;
-{
-  //...
-  //...
-
-  public void createActivityButtonPressed (View view)
-  {  
-    double distance = distancePicker.getValue();
-    Activity activity = new Activity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
-
-    app.createActivity(this, activity, this);
-  }
-
-  @Override
-  public void setResponse(List&lt;Activity&gt; aList)
-  {}
-
-  @Override
-  public void setResponse(Activity anObject)
-  {}
-
-  @Override
-  public void errorOccurred(Exception e)
-  {
-    Toast toast = Toast.makeText(this, &quot;Failed to create Activity&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-</code></pre>
-
-<p>This will fail due to mismatch in names used n Activity model. Rename <code>type</code> to <code>kind</code> :</p>
-<pre><code class="java">public class Activity
-{
-  public Long id;
-  public String kind;
-  public String location;
-  public double distance;
-  //...
-}
-</code></pre>
-
-<p>Type is a valid Scala reserved word, and is disturbing the scala templates compilation process.</p>
-<p>Test this now and verify that web and android are in sync. Make sure you can follow the flow of information to/from the service.</p>
+<p>The http library is largely superseded now, but we can use the same one we used on the pacemaker-service to keep our projects aligned for the moment.</p>
   </div>
   <div  class="ui tab segment lab" data-tab="05">
-    <h1>Mediator</h1>
-<p>We could attempt to rationalise the syncing - by introducing a <code>mediator</code> to encapsulate thte sync behaviour.</p>
-<p>First, introduce a new interface to encapsulate more generic sync events:</p>
-<pre><code class="java">package org.pacemaker.main;
+    <h1>pacemaker-android HTTP package</h1>
+<p>We need new package of classes in the android application to converse with the pacemaker-service app:</p>
+<p>Create a new package called 'org.pacemaker.http', and incorporate these classes:</p>
+<h2>Request</h2>
+<pre><code class="java">package org.pacemaker.http;
 
-public interface SyncUpdate
+import java.util.List;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+
+@SuppressWarnings(&quot;rawtypes&quot;)
+public abstract class Request extends AsyncTask&lt;Object, Void, Object&gt;
 {
-  void userSyncComplete();
-  void activitiesSyncComplete();
-  void syncError (Exception e);
+  public Response         responder;
+  public ProgressDialog   dialog;
+  public Context          context;
+  public String           message;
+  public Exception        error;
+
+  public Request(Context context, Response responder, String message)
+  {
+    this.responder = responder;
+    this.context = context;
+    this.message = message;
+  }
+
+  @Override
+  protected void onPreExecute()
+  {
+    super.onPreExecute();
+    this.dialog = new ProgressDialog(context, 1);
+    this.dialog.setMessage(message);
+    this.dialog.show();
+  }
+
+  @Override
+  protected  Object doInBackground(Object... params)
+  {
+    error = null;
+    try
+    {
+      return doRequest(params);
+    }
+    catch (Exception e)
+    {
+      error = e;
+    }
+    return null;
+  }
+
+  protected abstract  Object doRequest(Object... params) throws Exception;
+
+  @SuppressWarnings(&quot;unchecked&quot;)
+  @Override
+  protected void onPostExecute(Object result)
+  {
+    super.onPostExecute(result);
+    if (dialog.isShowing())
+    {
+      dialog.dismiss();
+    }
+    if (error != null)
+    {
+      responder.errorOccurred(error);  
+    }
+    else
+    {
+      if (result instanceof List)
+      {
+        responder.setResponse((List)result);
+      }
+      else
+      {
+        responder.setResponse(result);
+      }
+    }
+  } 
 }
 </code></pre>
 
-<p>Then we introduce a Mediator class to hide access to the API:</p>
-<pre><code class="java">package org.pacemaker.main;
+<h2>Response</h2>
+<pre><code>package org.pacemaker.http;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.pacemaker.http.Response;
-import org.pacemaker.models.Activity;
-import org.pacemaker.models.User;
-
-import android.content.Context;
-import android.widget.Toast;
-
-public class PacemakerMediator
+public interface Response&lt;T&gt;
 {
-  Context                     context;
-  SyncUpdate                  syncUpdate;
-  Map&lt;String, User&gt;           users             = new HashMap&lt;String, User&gt;();
-  Map&lt;String, List&lt;Activity&gt;&gt; activities        = new HashMap&lt;String, List&lt;Activity&gt;&gt;();
-  UserResponder               userResponder     = new UserResponder(this);
-  ActivityResponder           activityResponder = new ActivityResponder(this);  
-
-  public User getUser(String email)
-  {
-    return users.get(email);
-  }
-
-  public List&lt;Activity&gt; getActivities(User user)
-  {
-    return activities.get(user.email);
-  }
-
-  public void registerUser(Context context, User user, SyncUpdate syncUpdate)
-  {
-    this.syncUpdate = syncUpdate;
-    PacemakerAPI.createUser(context, userResponder, &quot;Creating new User...&quot;, user);
-  }
-
-  public void createActivity(User user, Activity activity, SyncUpdate syncUpdate)
-  {
-    this.syncUpdate = syncUpdate;
-    PacemakerAPI.createActivity(context, user, activityResponder, &quot;Creating new Activity...&quot;, activity);
-  }
-
-  void syncUsers(Context context, SyncUpdate syncUpdate)
-  {
-    this.context    = context;
-    this.syncUpdate = syncUpdate;
-    PacemakerAPI.getUsers(context, userResponder, &quot;Syncing Users&quot;);
-  }
-
-  void syncActivities(User user, SyncUpdate syncUpdate)
-  {
-    this.syncUpdate = syncUpdate;
-    activityResponder.user = user;
-    PacemakerAPI.getActivities(context, user, activityResponder, &quot;Syncing Activities&quot;);
-  }
-
-  void error(Exception e)
-  {
-    Toast toast = Toast.makeText(context, &quot;Error in communicating with Pacemaker&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
+  public void setResponse(List&lt;T&gt; aList);
+  public void setResponse(T anObject);
+  public void errorOccurred (Exception e);
 }
+</code></pre>
 
-class UserResponder implements Response&lt;User&gt;
+<h2>Rest</h2>
+<pre><code>package org.pacemaker.http;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
+public class Rest
 {
-  PacemakerMediator mediator;
+  private static DefaultHttpClient httpClient = null;
+  private static final String URL = &quot;http://10.0.2.2:9000&quot;;
 
-  UserResponder (PacemakerMediator pacemakerMediator)
+  private static DefaultHttpClient httpClient()
   {
-    this.mediator = pacemakerMediator;
-  }
-
-  @Override
-  public void setResponse(List&lt;User&gt; users)
-  {
-    for (User user : users)
+    if (httpClient == null)
     {
-      mediator.users.put(user.email, user);
+      HttpParams httpParameters = new BasicHttpParams();
+      HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+      HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+      httpClient = new DefaultHttpClient(httpParameters);
     }
-    mediator.syncUpdate.userSyncComplete();
+    return httpClient;
   }
 
-  @Override
-  public void setResponse(User user)
+  public static String get(String path) throws Exception
   {
-    mediator.users.put(user.email, user);
-    mediator.activities.put(user.email, new ArrayList&lt;Activity&gt;());
-    mediator.syncUpdate.userSyncComplete();
+    HttpGet getRequest = new HttpGet(URL + path);
+    getRequest.setHeader(&quot;accept&quot;, &quot;application/json&quot;);
+    HttpResponse response = httpClient().execute(getRequest);
+    return new BasicResponseHandler().handleResponse(response);
   }
 
-  @Override
-  public void errorOccurred(Exception e)
+  public static String delete(String path) throws Exception
   {
-    mediator.error(e);
-  }
-}
-
-class ActivityResponder implements Response&lt;Activity&gt;
-{
-  PacemakerMediator mediator;
-  User              user;
-
-  ActivityResponder (PacemakerMediator mediator)
-  {
-    this.mediator = mediator;
+    HttpDelete deleteRequest = new HttpDelete(URL + path);
+    HttpResponse response = httpClient().execute(deleteRequest);
+    return new BasicResponseHandler().handleResponse(response);
   }
 
-  @Override
-  public void setResponse(List&lt;Activity&gt; activities)
+  public static String put(String path, String json) throws Exception
   {
-    mediator.activities.put(user.email, activities);
-    mediator.syncUpdate.activitiesSyncComplete();
+    HttpPut putRequest = new HttpPut(URL + path);
+    putRequest.setHeader(&quot;Content-type&quot;, &quot;application/json&quot;);
+    putRequest.setHeader(&quot;accept&quot;, &quot;application/json&quot;);
+
+    StringEntity s = new StringEntity(json);
+    s.setContentEncoding(&quot;UTF-8&quot;);
+    s.setContentType(&quot;application/json&quot;);
+    putRequest.setEntity(s);
+
+    HttpResponse response = httpClient().execute(putRequest);
+    return new BasicResponseHandler().handleResponse(response);
   }
 
-  @Override
-  public void setResponse(Activity activity)
+  public static String post(String path, String json) throws Exception
   {
-    mediator.activities.get(user.email).add(activity);
-    mediator.syncUpdate.activitiesSyncComplete();
-  }
+    HttpPost putRequest = new HttpPost(URL + path);
+    putRequest.setHeader(&quot;Content-type&quot;, &quot;application/json&quot;);
+    putRequest.setHeader(&quot;accept&quot;, &quot;application/json&quot;);
 
-  @Override
-  public void errorOccurred(Exception e)
-  {
-    mediator.error(e);
+    StringEntity s = new StringEntity(json);
+    s.setContentEncoding(&quot;UTF-8&quot;);
+    s.setContentType(&quot;application/json&quot;);
+    putRequest.setEntity(s);
+
+    HttpResponse response = httpClient().execute(putRequest);
+    return new BasicResponseHandler().handleResponse(response);
   }
 }
 </code></pre>
   </div>
   <div  class="ui tab segment lab" data-tab="06">
-    <h1>PacemakerApp</h1>
-<p>With the mediator in place, refactor PacemakerApp to use the mediator:</p>
+    <h1>Json Parser Classes</h1>
+<p>Both pacemaker-service and pacemaker-android can use the same serializers. </p>
+<p>Place this class in the models package in the android project:</p>
+<h2>JsonParser</h2>
+<pre><code>package org.pacemaker.models;
+
+import java.util.ArrayList;
+import java.util.List;
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
+
+public class JsonParser
+{
+  public static JSONSerializer userSerializer     = new JSONSerializer().exclude(&quot;class&quot;)
+      .exclude(&quot;persistent&quot;)
+      .exclude(&quot;entityId&quot;);
+  public static JSONSerializer activitySerializer = new JSONSerializer().exclude(&quot;class&quot;)
+      .exclude(&quot;persistent&quot;)
+      .exclude(&quot;entityId&quot;);
+
+  public static User json2User(String json)
+  {
+    return new JSONDeserializer&lt;User&gt;().deserialize(json, User.class);
+  }
+
+  public static List&lt;User&gt; json2Users(String json)
+  {
+    return new JSONDeserializer&lt;ArrayList&lt;User&gt;&gt;().use(&quot;values&quot;, User.class)
+        .deserialize(json);
+  }
+
+  public static String user2Json(Object obj)
+  {
+    return userSerializer.serialize(obj);
+  }
+
+  public static MyActivity json2Activity(String json)
+  {
+    MyActivity activity = new JSONDeserializer&lt;MyActivity&gt;().deserialize(json,   MyActivity.class);
+    return activity;
+  }
+
+  public static String activity2Json(Object obj)
+  {
+    return activitySerializer.serialize(obj);
+  }
+
+  public static  List&lt;MyActivity&gt; json2Activities (String json)
+  {
+    return new JSONDeserializer&lt;ArrayList&lt;MyActivity&gt;&gt;().use(&quot;values&quot;, MyActivity.class).deserialize(json);
+  }
+}
+</code></pre>
+
+<p>The MyActivity class has an unfortunately named attribute:</p>
+<pre><code>  public String type;
+</code></pre>
+
+<p>Rename this to:</p>
+<pre><code>  public String kind;
+</code></pre>
+
+<p>(type is has a specific meaning in another context)</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="07">
+    <h1>PacemakerAPI Client</h1>
+<p>Create a new class in the 'org.pacemaker.main' package to encapsulate API access:</p>
+<h2>PacemkerAPI</h2>
 <pre><code class="java">package org.pacemaker.main;
 
 import java.util.List;
-import org.pacemaker.models.Activity;
+import org.pacemaker.http.Request;
+import org.pacemaker.http.Response;
+import org.pacemaker.http.Rest;
+import org.pacemaker.models.JsonParser;
 import org.pacemaker.models.User;
-import android.app.Application;
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
-public class PacemakerApp extends Application implements  SyncUpdate
+public class PacemakerAPI
 {
-  private User              loggedInUser;
-  private PacemakerMediator mediator = new PacemakerMediator();
-
-  public void syncUsers(Context context)
+  public static void getUsers(Context context, Response&lt;User&gt; response, String dialogMesssage)
   {
-     mediator.syncUsers(context, this);
+    new GetUsers(context, response, dialogMesssage).execute();
   }
 
-  public void registerUser(User user, Context context)
+  public static void createUser(Context context, Response&lt;User&gt; response, String dialogMesssage, User user)
   {
-    mediator.registerUser(context, user, this);
+    new CreateUser(context, response, dialogMesssage).execute(user);
   }
+}
 
-  public List&lt;Activity&gt; getActivities()
+class GetUsers extends Request
+{
+  public GetUsers(Context context, Response&lt;User&gt; callback, String message)
   {
-    return mediator.getActivities(loggedInUser);
-  }
-
-  public boolean loginUser(String email, String password)
-  {
-    loggedInUser = mediator.getUser(email);
-    if (loggedInUser != null &amp;&amp; !loggedInUser.password.equals(password))
-    {
-      loggedInUser = null;
-    }
-    mediator.syncActivities(loggedInUser, this);
-    return loggedInUser != null;
-  }
-
-  public void logout()
-  {
-    loggedInUser = null;
-  }
-
-  public void createActivity (Context context, Activity activity, SyncUpdate syncUpdate)
-  {
-    if (loggedInUser != null)
-    {
-      mediator.createActivity(loggedInUser, activity, syncUpdate);
-    }
+    super(context, callback, message);
   }
 
   @Override
-  public void userSyncComplete()
+  protected List&lt;User&gt; doRequest(Object... params) throws Exception
   {
-    Toast toast = Toast.makeText(this, &quot;Pacemaker Sync Successful&quot;, Toast.LENGTH_SHORT);
-    toast.show();
+    String response = Rest.get(&quot;/api/users&quot;);
+    List&lt;User&gt; userList = JsonParser.json2Users(response);
+    return userList;
+  }
+}
+
+class CreateUser extends Request
+{
+  public CreateUser(Context context, Response&lt;User&gt; callback, String message)
+  {
+    super(context, callback, message);
   }
 
   @Override
-  public void activitiesSyncComplete()
-  {  
-    Toast toast = Toast.makeText(this, &quot;Pacemaker Sync Successful&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-
-  @Override
-  public void syncError(Exception e)
+  protected User doRequest(Object... params) throws Exception
   {
-    Toast toast = Toast.makeText(this, &quot;Failed to connect to Pacemaker Service&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-
-  @Override
-  public void onCreate()
-  {
-    super.onCreate();
-    Log.v(&quot;Pacemaker&quot;, &quot;Pacemaker App Started&quot;);
+    String response = Rest.post(&quot;/api/users&quot;, JsonParser.user2Json(params[0]));
+    return JsonParser.json2User(response);
   }
 }
 </code></pre>
   </div>
-  <div  class="ui tab segment lab" data-tab="07">
-    <h1>Controllers</h1>
-<p>The controllers can now be relieved for responsibility for accessing the API in a fine grained manner, and use the Mediator we have just introduced:</p>
-<h2>Welcome</h2>
-<pre><code class="java">  public void onCreate(Bundle savedInstanceState)
+  <div  class="ui tab segment lab" data-tab="08">
+    <h1>Connect</h1>
+<p>In order to use network access from android, you will need to specifically enable it in the android manifest:</p>
+<h2>AndroidManifest.xml</h2>
+<pre><code>    &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
+</code></pre>
+
+<h2>Welcome Activity</h2>
+<p>We can now retrieve the users list from the welcome activity:</p>
+<pre><code>  public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_welcome);
     app = (PacemakerApp) getApplication();
-    app.syncUsers(this);
+    PacemakerAPI.getUsers(this, app, &quot;Retrieving list of users&quot;);
   }
 </code></pre>
 
-<h2>Signup</h2>
-<pre><code class="java">  public void registerPressed (View view)
-  {
-    TextView firstName = (TextView)  findViewById(R.id.firstName);
-    TextView lastName  = (TextView)  findViewById(R.id.lastName);
-    TextView email     = (TextView)  findViewById(R.id.Email);
-    TextView password  = (TextView)  findViewById(R.id.Password);
-
-    User user = new User (firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString());
-    app.registerUser(user, this);
-    startActivity (new Intent(this, Login.class));
-  }
-</code></pre>
-
-<h2>CreateActivity</h2>
-<pre><code class="java">package org.pacemaker.controllers;
-
-import org.pacemaker.R;
-import org.pacemaker.main.PacemakerApp;
-import org.pacemaker.main.SyncUpdate;
-import org.pacemaker.models.Activity;
-
-import android.os.Bundle;
-import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.NumberPicker;
-import android.widget.TextView;
-import android.widget.Toast;
-
-public class CreateActivity extends android.app.Activity implements SyncUpdate
+<p>Note that the PacemakerApp class must implement the Response interface:</p>
+<h2>PacemakerApp</h2>
+<pre><code class="java">public class PacemakerApp extends Application implements Response&lt;User&gt;
 {
-  private PacemakerApp   app;
-  private Button         createActivityButton;
-  private TextView       activityType;
-  private TextView       activityLocation;
-  private NumberPicker   distancePicker;
+  private Map&lt;String, User&gt;             users         = new HashMap&lt;String, User&gt;();
+  private Map&lt;String, List&lt;MyActivity&gt;&gt; activities    = new HashMap&lt;String, List&lt;MyActivity&gt;&gt;();
+  private User                          loggedInUser;
+  private boolean                       connected     = false;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState)
+  public void setResponse(List&lt;User&gt; aList)
   {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_create);
-
-    app = (PacemakerApp) getApplication();
-
-    createActivityButton = (Button)       findViewById(R.id.createActivityButton);
-    activityType         = (TextView)     findViewById(R.id.activityType);
-    activityLocation     = (TextView)     findViewById(R.id.activityLocation);
-    distancePicker       = (NumberPicker) findViewById(R.id.distancePicker);
-
-    distancePicker.setMinValue(0);
-    distancePicker.setMaxValue(20);
-  }
-
-  public void createActivityButtonPressed (View view)
-  {  
-    double distance = distancePicker.getValue();
-    Activity activity = new Activity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
-
-    app.createActivity(this, activity, this);
-  }
-
-  @Override
-  public void userSyncComplete()
-  { }
-
-  @Override
-  public void activitiesSyncComplete()
-  {
-    Toast toast = Toast.makeText(this, &quot;Activity Created&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-
-  @Override
-  public void syncError(Exception e)
-  {
-    Toast toast = Toast.makeText(this, &quot;Failed to create Activity&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu)
-  {
-    getMenuInflater().inflate(R.menu.activities_create, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item)
-  {
-    switch (item.getItemId())
+    connected = true;
+    for (User user : aList)
     {
-      case R.id.action_list_actvities : startActivity (new Intent(this, ActivitiesList.class));
-                                        break;
-      case R.id.action_logout         : startActivity (new Intent(this, Welcome.class));
-                                        break;
+      users.put(user.email, user);
     }
-    return true;
   }
-}
+
+  @Override
+  public void setResponse(User anObject)
+  {
+    connected = true;
+  }
+
+  @Override
+  public void errorOccurred(Exception e)
+  {
+    connected = false;
+    Toast toast = Toast.makeText(this, &quot;Failed to connect to Pacemaker Service&quot;, Toast.LENGTH_SHORT);
+    toast.show();
+  }
+
+  //...
 </code></pre>
 
-<h2>ActivitiesList</h2>
-<pre><code class="java">package org.pacemaker.controllers;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.pacemaker.R;
-import org.pacemaker.main.PacemakerApp;
-import org.pacemaker.main.SyncUpdate;
-import org.pacemaker.models.Activity;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-public class ActivitiesList extends  android.app.Activity implements SyncUpdate
-{
-  private PacemakerApp     app;
-  private ListView         activitiesListView;
-  private ActivityAdapter  activitiesAdapter;
-  private List&lt;Activity&gt;   activities = new ArrayList&lt;Activity&gt;();
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState)
-  {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activities_list);
-
-    app = (PacemakerApp) getApplication();
-
-    activitiesListView = (ListView) findViewById(R.id.activitiesListView);
-    activitiesAdapter = new ActivityAdapter(this,  activities);
-    activitiesListView.setAdapter(activitiesAdapter);
-    activitiesAdapter.activities = app.getActivities();
-    activitiesAdapter.notifyDataSetChanged();
-  }
-
-  @Override
-  public void userSyncComplete()
-  { }
-
-  @Override
-  public void activitiesSyncComplete()
-  {
-    activitiesAdapter.activities = app.getActivities();
-    activitiesAdapter.notifyDataSetChanged();
-  }
-
-  @Override
-  public void syncError(Exception e)
-  {
-    Toast toast = Toast.makeText(this, &quot;Error Retrieving Activities...&quot;, Toast.LENGTH_SHORT);
-    toast.show();
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu)
-  {
-    getMenuInflater().inflate(R.menu.activities_list, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item)
-  {
-    switch (item.getItemId())
-    {
-      case R.id.action_create_actvities : startActivity (new Intent(this, CreateActivity.class));
-                                          break;
-      case R.id.action_logout           : startActivity (new Intent(this, Welcome.class));
-                                          break;
-    }
-    return true;
-  }
-}
-
-// Adapter unchanged
-</code></pre>
+<p>You should be able to test this now. If the service is running, then the android app will contact the service and download a list of the registered users, so you should be able to log in with one of the pre-defined users.</p>
+<p>If it is not working, you should see an error toast in the android app.</p>
   </div>
   <div  class="ui tab segment lab" data-tab="Exercises">
-    <h1>Exercises</h1>
-<p>Archive of the app so far:</p>
+    <h1>Archive</h1>
+<p>Archive of the apps so far:</p>
+<h2>Android:</h2>
 <ul>
-<li><a href="./archives/pacemaker-android-v5.zip">pacemaker-android-v5.zip</a></li>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V5">https://github.com/wit-design-patterns-2016/pacemaker-android/releases/tag/V5</a></li>
 </ul>
-<p>This lab has introduce the Mediator pattern in an attempt to intorduce a generic 'sync' feature. There are a range of features in the Andorid SDK which could be exploited by the Mediator implementation - or which could replace the mediator completely, implementing a more reobust sync facility. These are concepts that can usefully implemented in your assiignment. Among these are:</p>
-<h2><a href="http://developer.android.com/guide/components/services.html">Services</a></h2>
-<blockquote>
-<p>A Service is an application component that can perform long-running operations in the background and does not provide a user interface. Another application component can start a service and it will continue to run in the background even if the user switches to another application</p>
-</blockquote>
-<p>Currently, for every command a new thread is being created vie the <code>AsyncTask</code> execute method:</p>
-<pre><code class="java">    new GetActivities(context, user, response, dialogMesssage).execute();
-</code></pre>
-
-<p>(Note the '.execute' above). Unless we specifically initiate a command like this from the andrid client, we will not revieve any updates. We could initiatie a service on application launch, which would periodically reach out to the service and download any updates. In this way, if a user updated activities using the web app, then should appear on the android client in due course.</p>
-<h2><a href="http://developer.android.com/reference/android/content/BroadcastReceiver.html">BroadcastRecievers</a></h2>
-<p>If you implement the services above, then your activities will need to be updated periodically if a change is noticed. BroadcastRecievers are one way of achieving this. It may even be possible for multiple applications to 'register' for activity updates using this mechanism</p>
-<h2><a href="http://developer.android.com/training/sync-adapters/creating-sync-adapter.html">SyncAdapter</a></h2>
-<blockquote>
-<p>The sync adapter component in your app encapsulates the code for the tasks that transfer data between the device and a server. Based on the scheduling and triggers you provide in your app, the sync adapter framework runs the code in the sync adapter component.</p>
-</blockquote>
-<p>Supplimenting the above, the SyncAdapter framework introduces a more comprehensive solution to sync issues:</p>
+<h2>Web Service:</h2>
+<ul>
+<li><a href="https://github.com/wit-design-patterns-2016/pacemaker-service/releases/tag/V2">https://github.com/wit-design-patterns-2016/pacemaker-service/releases/tag/V2</a></li>
+</ul>
   </div>
 <script>
 $('.ui.menu .item')
