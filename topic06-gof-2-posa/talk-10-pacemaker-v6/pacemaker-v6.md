@@ -1,1 +1,1 @@
-Pacemaker-android V6
+Pacemaker v6
