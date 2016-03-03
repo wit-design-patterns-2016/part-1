@@ -83,69 +83,65 @@ figcaption
 
 
 <div class="ui four doubling stackable cards">
-      <div class="ui card">
+      <a class="ui card" href="./talk-1\rc008-designpatterns_online.pdf">
     <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> DZone Reference Card </div>
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> DZone Reference Card </div>
     </div>
-    <a href="./talk-1\rc008-designpatterns_online.pdf">
-      <img class="ui bordered rounded image" src="./talk-1\rc008-designpatterns_online.png">
-    </a>
-    <div class="content">
-      <div class="description">
-         
-      </div>
+    <div class="ui bordered rounded image">
+      <img src="./talk-1\rc008-designpatterns_online.png">
     </div>
-  </div>
-
-
-      <div class="ui card">
-    <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> GOF Reference Card </div>
-    </div>
-    <a href="./talk-2\designpatternscard.pdf">
-      <img class="ui bordered rounded image" src="./talk-2\designpatternscard.png">
-    </a>
     <div class="content">
       <div class="description">
          
       </div>
     </div>
-  </div>
+  </a>
 
-
-      <div class="ui card">
+      <a class="ui card" href="./talk-2\designpatternscard.pdf">
     <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> Holub Catalogue </div>
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> GOF Reference Card </div>
     </div>
-    <a href="./talk-3\holub_design_patterns.pdf">
-      <img class="ui bordered rounded image" src="./talk-3\holub_design_patterns.jpeg">
-    </a>
-    <div class="content">
-      <div class="description">
-         
-      </div>
+    <div class="ui bordered rounded image">
+      <img src="./talk-2\designpatternscard.png">
     </div>
-  </div>
-
-
-      <div class="ui card">
-    <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> Logical Catalogiue </div>
-    </div>
-    <a href="./talk-4\GoF_DesignPatterns_Java_UML.pdf">
-      <img class="ui bordered rounded image" src="./talk-4\GoF_DesignPatterns_Java_UML.png">
-    </a>
     <div class="content">
       <div class="description">
          
       </div>
     </div>
-  </div>
+  </a>
 
+      <a class="ui card" href="./talk-3\holub_design_patterns.pdf">
+    <div class="content">
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> Holub Catalogue </div>
+    </div>
+    <div class="ui bordered rounded image">
+      <img src="./talk-3\holub_design_patterns.jpeg">
+    </div>
+    <div class="content">
+      <div class="description">
+         
+      </div>
+    </div>
+  </a>
+
+      <a class="ui card" href="./talk-4\GoF_DesignPatterns_Java_UML.pdf">
+    <div class="content">
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> Logical Catalogiue </div>
+    </div>
+    <div class="ui bordered rounded image">
+      <img src="./talk-4\GoF_DesignPatterns_Java_UML.png">
+    </div>
+    <div class="content">
+      <div class="description">
+         
+      </div>
+    </div>
+  </a>
 
   </div>
    </div>
@@ -167,7 +163,6 @@ figcaption
 $(document).ready(function()
 {
   $("img").addClass ("ui image");
-  $('.ui.embed').embed();
 
   var images = $(".lab img");
   jQuery.each(images, function(i)  {
@@ -180,8 +175,6 @@ $(document).ready(function()
       $(div_label).insertBefore(images[i]);
     }
   });
-
-
 })    </script>
 
   </body>

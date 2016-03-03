@@ -83,53 +83,50 @@ figcaption
 
 
 <div class="ui four doubling stackable cards">
-      <div class="ui card">
+      <a class="ui card" href="./talk-a-streams_and_lambdas\lambdas.pdf">
     <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> Streams & Lambdas </div>
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> Streams & Lambdas </div>
     </div>
-    <a href="./talk-a-streams_and_lambdas\lambdas.pdf">
-      <img class="ui bordered rounded image" src="./talk-a-streams_and_lambdas\lambdas.png">
-    </a>
+    <div class="ui bordered rounded image">
+      <img src="./talk-a-streams_and_lambdas\lambdas.png">
+    </div>
     <div class="content">
       <div class="description">
          <p>A stream provides an interface to a sequenced set of values of a specific element type. “Lambda” = “closure” = record storing a function (functionality, method) and its environment (but without a class or method name)</p>
       </div>
     </div>
-  </div>
+  </a>
 
-
-      <div class="ui card">
+      <a class="ui card" href="./talk-b-exercises\lambda-exercises.pdf">
     <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> Exercises </div>
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> Exercises </div>
     </div>
-    <a href="./talk-b-exercises\lambda-exercises.pdf">
-      <img class="ui bordered rounded image" src="./talk-b-exercises\lambda-exercises.png">
-    </a>
+    <div class="ui bordered rounded image">
+      <img src="./talk-b-exercises\lambda-exercises.png">
+    </div>
     <div class="content">
       <div class="description">
          <p>Exercises in Steams &amp; Lamndas</p>
       </div>
     </div>
-  </div>
+  </a>
 
-
-      <div class="ui card">
+      <a class="ui card" href="./talk-c-solutions\LambdasStreams.pdf">
     <div class="content">
-        <div class="right floated meta"> <i class="film large icon"></i></div>
-        <div class="header"> Solutions </div>
+      <div class="right floated meta"> <i class="film large icon"></i></div>
+      <div class="header"> Solutions </div>
     </div>
-    <a href="./talk-c-solutions\LambdasStreams.pdf">
-      <img class="ui bordered rounded image" src="./talk-c-solutions\LambdasStreams.png">
-    </a>
+    <div class="ui bordered rounded image">
+      <img src="./talk-c-solutions\LambdasStreams.png">
+    </div>
     <div class="content">
       <div class="description">
          <p>Solutions for the Exercises on Lamndas &amp; Streams</p>
       </div>
     </div>
-  </div>
-
+  </a>
 
   </div>
    </div>
@@ -151,7 +148,6 @@ figcaption
 $(document).ready(function()
 {
   $("img").addClass ("ui image");
-  $('.ui.embed').embed();
 
   var images = $(".lab img");
   jQuery.each(images, function(i)  {
@@ -164,8 +160,6 @@ $(document).ready(function()
       $(div_label).insertBefore(images[i]);
     }
   });
-
-
 })    </script>
 
   </body>
