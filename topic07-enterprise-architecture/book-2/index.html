@@ -1,0 +1,238 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+
+     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css" type="text/css">
+     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/solarized_light.min.css" rel="stylesheet" />
+
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/languages/java.min.js"></script>
+     <script>hljs.initHighlightingOnLoad();</script>
+
+      <style>
+
+
+body 
+{
+  font-family: "Open Sans", "Helvetica", "Helvetica Neue",  "Arial", sans-serif;
+}
+
+figcaption
+{
+  margin-bottom: 20px;
+}
+
+.vertical-align
+{
+  display: flex;
+  align-items: center;
+}
+
+.credits
+{
+  min-height:20px;
+}
+    </style>
+
+  </head>
+
+  <body>
+
+  <div class="ui container">
+<style>
+
+
+code
+{
+  font-family: "Monaco";
+  font-size: 110%;
+}
+
+img
+{
+  padding:1px;
+  border:1px solid black;
+}
+
+h1
+{
+  font-style:italic;
+  font-size:130%;
+  border-bottom: thin solid black;
+}
+h2
+{
+  font-size:110%;
+  border-bottom: thin solid black;
+}
+h3
+{
+  font-size:100%;
+  border-bottom: thin solid black;
+}
+
+</style>
+
+<div class="ui fixed top pointing inverted menu labmenu">
+  <header class="header item">
+    <a href="../index.html">
+      <i class="sitemap icon"></i>
+      Enterprise Architecture
+    </a>
+  </header>
+  <div class="right tab-menu menu">
+    <a class="active item" data-tab="Lab-07b">
+        Lab-07b
+    </a>
+      <a class="item" data-tab="Fundamentals">
+        Fundamentals
+      </a>
+      <a class="item" data-tab="Step1">
+        Step1
+      </a>
+      <a class="item" data-tab="Step2">
+        Step2
+      </a>
+      <a class="item" data-tab="Step3">
+        Step3
+      </a>
+      <a class="item" data-tab="Step4">
+        Step4
+      </a>
+    </div>
+</div>
+
+<br><br>
+
+  <div  class="ui tab segment lab" data-tab="Lab-07b">
+    <h1>Objectives</h1>
+<p>In this lab, you will model your first application - a Web Portlet named Daily Physical Routine Advisor. </p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Fundamentals">
+    <h1>Fundamentals</h1>
+<p>When Architecting enterprise solutions, we want to model behavior separately from structure.</p>
+<p>As Architects, our goal is to always be in a position to understand a solution design in the CONTEXT it was prepared.</p>
+<p>Your design tells a story, from which context and structure emerges for a reviewer to understand what you mean.</p>
+<p>This is important because context changes over time (i.e. new process, new environment, new roles, new system contraints, new requirements, ..the list goes on).</p>
+<p>A design that was fit for purpose and complete yesterday, may not be any longer considering present context.</p>
+<p>Separating behavior from structure helps to understand the validity of architectural decisions at a point in time.</p>
+<p>As applications get more complex, get combined, and get used in many different was (i.e. many contexts) by many actors (i.e. users or systems), separating behavior from structure helps surfacing gaps in the architecture.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Step1">
+    <h1>Step 1</h1>
+<p>First let's compose a Basic Application template to describe what our application aims to achieve. </p>
+<p>Let's approach the problem in terms of "who acts on what": 
+- (1.) its structure (who), 
+- (2.) its behavior (acts on), and
+- (3.) its data (on what).</p>
+<p><img alt="Figure 1a" src="img/00.png"></p>
+<p>To re-enforce the distinction between active (who) elements from behavioral (acting) elements, let's agree on some simple color conventions.</p>
+<ul>
+<li>
+<p>Pastel green elements in the model will represent a passive data-at-rest source of information informing the behavior of the application.</p>
+</li>
+<li>
+<p>Pastel Blue elements in the model will represent the actors ('who') constituents of design structure.</p>
+</li>
+<li>
+<p>Pastel Yellow elements in the model will represent the behavioral aspects of the actors elements.</p>
+</li>
+</ul>
+<p>Here is the resulting template.</p>
+<p><img alt="Figure 1b" src="img/01.png"></p>
+<p>The two yellow and two blue elements in the image together make up the core of the application model, here grouped together in a grey rectangle.</p>
+<p>Let's annotate the elements of our first model.</p>
+<p><img alt="Figure 1c" src="img/02.png"></p>
+<p><strong><em>Important note: You will notice that this proposed color-scheme doesn't mean the same as the color scheme proposed in the Archi IDE by default. In Archi, colors are mapped to Layers. In our case. we are mapping colors to element types. Both conventions are arbitrary, however ours will prove to be more meaningful as our models get complex.</em></strong></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Step2">
+    <h1>Step 2</h1>
+<p>Second let's compose a Basic Business Process template to describe the way an application is used by its business users. </p>
+<p>Once again let's think in terms of "who acts on what": </p>
+<ul>
+<li>(1.) its actors (who), </li>
+<li>(2.) its process (acts on), </li>
+<li>(3.) its resulting product/service (on what).</li>
+</ul>
+<p><img alt="Figure 1d" src="img/03.png"></p>
+<p>To re-enforce the distinction between active (who) elements from behavioral (acting) elements, let's apply our previously described color conventions.</p>
+<p><img alt="Figure 1e" src="img/04.png"></p>
+<h2>Exercise A</h2>
+<p>Consider the relationships between model elements in Figure 1e. Can you formulate the dependencies between these elements, taking inspiration from the labels of Figure 1a?</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Step3">
+    <h1>Step 3</h1>
+<p>Third, let's fill the missing links between business ant IT by mapping Application Structure with Business Structure, Application Behavior with Business Behavior, and Application Information with Business Product/Services.</p>
+<p><img alt="Figure 1f" src="img/05.png"></p>
+<p>Figure 1f demonstrates a basic template describing how IT (here a single enterprise application) offers supporting services to a business unit, in the context of a business process.</p>
+<p>These templates are basic. In a real situation, As process(es) complexity and application(s) complexity increases, the principle exposed in figure 1f remains valid.</p>
+<p>Any missing dependencies, any missing element, surfaced while mapping the application in its context of use outlines an architectural gap requiring attention.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Step4">
+    <h1>Step 4</h1>
+<p>In this Step we will model the key constituent of a fictive application using the template described in Figure 1b, provided as a reminder below.</p>
+<p><img alt="Figure 1b" src="img/06.png"></p>
+<p>This application - a Web Portlet named DailyPhysicalRoutineAdvisor (DPRA) - will be quite small and simple.</p>
+<p>DPRA aims to advise on what your daily physical routine should be, based on a number of factors, of which weight and size are strictly mandatory to start with.</p>
+<p>The application is made of one single component, providing one simple Mobile Phone Interface to users, and relying on one persistent data source.</p>
+<p>Based on the physiological parameters entered by its user, DPRA reaches to a data source - a decision table - to evaluate the daily exercise routine to prescribe as an output.</p>
+<p>So, in essence, our application is a glorified calculator, nothing more. Its main component defines computations. Its function depends of the physiological parameters a user is willing to share. Its interface is a Mobile Application (Web, iOS or Android), and its service is... its very purpose: advising users on what their daily physical routine should be.</p>
+<h2>Exercise B</h2>
+<p>Taking Figure 1b as reference, model DPRA application. </p>
+<p>Name model elements so these best reflect what they represent in relation to their element type. </p>
+<p>Use the NOTE element to annotate your first model and explain your design choices.</p>
+  </div>
+<script>
+$('.ui.menu .item')
+  .tab({
+    history: true,
+    historyType: 'hash'
+  })
+;
+</script>
+   </div>
+
+
+
+  <br><br>
+  <div class="ui bottom fixed borderless menu">
+    <div class="ui small item">
+    <p id="footertext">
+    Prepared by  Eamonn de Leastar (edeleastar@wit.ie). Except where otherwise noted, this content is licensed under a
+     <a  href="http://creativecommons.org/licenses/by-nc/4.0/" title="External link to http://creativecommons.org/licenses/by-nc/4.0/"
+       target="_blank">Creative Commons Attribution-NonCommercial 4.0 License
+     </a>
+     </p>
+    </div>
+  </div>    <script>
+
+$(document).ready(function()
+{
+  $("img").addClass ("ui image");
+  $('.ui.embed').embed();
+
+  var images = $(".lab img");
+  jQuery.each(images, function(i)  {
+    if((images[i].alt).length > 0)
+    {
+      var div_img = $(document.createElement("div")).addClass("ui segment");
+      $(images[i]).wrap(div_img);
+      var div_label = $(document.createElement("div")).addClass("ui ribbon teal top attached label");
+      div_label.append(images[i].alt);
+      $(div_label).insertBefore(images[i]);
+    }
+  });
+
+
+})    </script>
+
+  </body>
+ </html>

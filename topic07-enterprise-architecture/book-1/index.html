@@ -1,0 +1,330 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+
+     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css" type="text/css">
+     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/solarized_light.min.css" rel="stylesheet" />
+
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/languages/java.min.js"></script>
+     <script>hljs.initHighlightingOnLoad();</script>
+
+      <style>
+
+
+body 
+{
+  font-family: "Open Sans", "Helvetica", "Helvetica Neue",  "Arial", sans-serif;
+}
+
+figcaption
+{
+  margin-bottom: 20px;
+}
+
+.vertical-align
+{
+  display: flex;
+  align-items: center;
+}
+
+.credits
+{
+  min-height:20px;
+}
+    </style>
+
+  </head>
+
+  <body>
+
+  <div class="ui container">
+<style>
+
+
+code
+{
+  font-family: "Monaco";
+  font-size: 110%;
+}
+
+img
+{
+  padding:1px;
+  border:1px solid black;
+}
+
+h1
+{
+  font-style:italic;
+  font-size:130%;
+  border-bottom: thin solid black;
+}
+h2
+{
+  font-size:110%;
+  border-bottom: thin solid black;
+}
+h3
+{
+  font-size:100%;
+  border-bottom: thin solid black;
+}
+
+</style>
+
+<div class="ui fixed top pointing inverted menu labmenu">
+  <header class="header item">
+    <a href="../index.html">
+      <i class="sitemap icon"></i>
+      Enterprise Architecture
+    </a>
+  </header>
+  <div class="right tab-menu menu">
+    <a class="active item" data-tab="Lab-07a">
+        Lab-07a
+    </a>
+      <a class="item" data-tab="01">
+        01
+      </a>
+      <a class="item" data-tab="02">
+        02
+      </a>
+      <a class="item" data-tab="03">
+        03
+      </a>
+      <a class="item" data-tab="04">
+        04
+      </a>
+      <a class="item" data-tab="05">
+        05
+      </a>
+      <a class="item" data-tab="06">
+        06
+      </a>
+      <a class="item" data-tab="07">
+        07
+      </a>
+      <a class="item" data-tab="08">
+        08
+      </a>
+      <a class="item" data-tab="09">
+        09
+      </a>
+      <a class="item" data-tab="10">
+        10
+      </a>
+      <a class="item" data-tab="11">
+        11
+      </a>
+    </div>
+</div>
+
+<br><br>
+
+  <div  class="ui tab segment lab" data-tab="Lab-07a">
+    <h1>Objectives</h1>
+<p>The objective of this lab is to install Archi (archimate modelling) and through it's use, bring a practical focus to some of the terms and concepts covered in the lecture.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="01">
+    <h1>Installing Archi (a tool for ArchiMate modelling)</h1>
+<p><img alt="Free ArchiMate Modelling Tool" src="img/00.png"></p>
+<p><img alt="ArchiMate Modelling Language - Brief Description" src="img/01.png"></p>
+<p>You can read more about ArchiMate here: <a href="http://pubs.opengroup.org/architecture/archimate2-doc/toc.html">http://pubs.opengroup.org/architecture/archimate2-doc/toc.html</a></p>
+<p>Nagivate to the ArchiMate website:</p>
+<ul>
+<li><a href="http://www.archimatetool.com/">http://www.archimatetool.com/</a></li>
+</ul>
+<p>and click the <strong>Free Download</strong> button to save the latest version to your local disk: </p>
+<p><img alt="Archi - Download" src="img/02.png"></p>
+<p>Once it is downloaded, locate the file on your hard disk and run it.</p>
+<p>Once installed, start the Archi application:</p>
+<p><img alt="Archi - Welcome Window" src="img/03.png"></p>
+<p>Close the <strong>Welcome</strong> window.  You are now ready to start modelling:</p>
+<p><img alt="Archi - Application" src="img/04.png"></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="02">
+    <h1>Archisurance Example</h1>
+<p>Archi comes with two example Models:</p>
+<ul>
+<li>Archisurance (the focus of this lab)</li>
+<li>OpenDay</li>
+</ul>
+<p>Open the <strong>Archisurance</strong> model that is stored in the <strong>examples</strong> folder for your recently installed <strong>Archi</strong> application:</p>
+<p><img alt="Open Archisurance Example" src="img/05.png"></p>
+<p><img alt="Archisurance Model" src="img/06.png"></p>
+<p>The Model Tree for Archisurance looks like this:</p>
+<p><img alt="Archisurance Model Tree" src="img/07.png"></p>
+<p><strong><em>Note: when you create an empty model, you are provided with the highest-level folder structure. You can create sub-folders under these and this allows you to organise the elements in any way you wish.</em></strong>  </p>
+<p>The Archinsurance model contains elements that typically belong to one of three main layers at which an enterprise can be modelled:</p>
+<ul>
+<li>The Business Layer</li>
+<li>The Application Layer</li>
+<li>The Technology Layer</li>
+</ul>
+<p>In the next few steps, we will briefly look at each of these three layers and the elements within.  We will also investigate some other folders in the Model Tree.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="03">
+    <h1>Archinsurance Example - Business Layer</h1>
+<p><strong><em>According to opengroup.org, "the Business Layer offers products and services to external customers, which are realised in the organisation by business processes performed by business actors."</em></strong></p>
+<p><img alt="Archinsurance Example - Business Layer" src="img/08.png"></p>
+<h2>Business Layer - Legend of Possible Elements</h2>
+<p><img alt="Business Layer Elements - Coloured Yellow" src="img/08a.png">
+<img alt="Business Layer Elements - Coloured Yellow (contd.)" src="img/08b.png"></p>
+<h2>Actors (user-defined sub folder)</h2>
+<p>Referring to the legend of elements above, review the Actors created in the Archinsurance model:</p>
+<p><img alt="Archinsurance Example - Actors (subset)" src="img/09a.png"></p>
+<h2>Functions (user-defined sub folder)</h2>
+<p>Referring to the legend of elements above, review the Functions created in the Archinsurance model:</p>
+<p><img alt="Archinsurance Example - Functions" src="img/09b.png"></p>
+<h2>Information (user-defined sub folder)</h2>
+<p>Referring to the legend of elements above, review the Information elements created in the Archinsurance model:</p>
+<p><img alt="Archinsurance Example - Information elements" src="img/09c.png"></p>
+<h2>Processes (user-defined sub folder)</h2>
+<p>Referring to the legend of elements above, review the Processes created in the Archinsurance model:</p>
+<p><img alt="Archinsurance Example - Processes" src="img/09d.png"></p>
+<h2>Products (user-defined sub folder)</h2>
+<p>Referring to the legend of elements above, review the Produts created in the Archinsurance model:</p>
+<p><img alt="Archinsurance Example - Products" src="img/09e.png"></p>
+<p>For more information on the Business Layer, please visit <a href="http://pubs.opengroup.org/architecture/archimate2-doc/chap03.html">http://pubs.opengroup.org/architecture/archimate2-doc/chap03.html</a></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="04">
+    <h1>Archinsurance Example - Application Layer</h1>
+<p><strong><em>According to opengroup.org, "the Application Layer supports the business layer with application services which are realised by (software) applications."</em></strong></p>
+<p><img alt="Archinsurance Example - Application Layer" src="img/10.png"></p>
+<h2>Application Layer - Legend of Possible Elements</h2>
+<p><img alt="Application Layer Elements - Coloured Blue" src="img/10a.png"></p>
+<h2>Applications and Data (user-defined sub folders)</h2>
+<p>Referring to the legend of elements above, review the elements created in the Applications and Data subfolders.</p>
+<p>For more information on the Application Layer, please visit <a href="http://pubs.opengroup.org/architecture/archimate2-doc/chap04.html">http://pubs.opengroup.org/architecture/archimate2-doc/chap04.html</a></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="05">
+    <h1>Archinsurance Example - Technology Layer</h1>
+<p><strong><em>According to opengroup.org, "the Technology Layer offers infrastructure services (e.g., processing, storage, and communication services) needed to run applications, realised by computer and communication hardware and system software."</em></strong></p>
+<p><img alt="Archinsurance Example - Technology Layer" src="img/12.png"></p>
+<h2>Technology Layer - Legend of Possible Elements</h2>
+<p><img alt="Technology Layer Elements - Coloured Green" src="img/12a.png"></p>
+<h2>Technology Folder</h2>
+<p>Referring to the legend of elements above, review the elements created in the Technology folder.</p>
+<p>For more information on the Application Layer, please visit <a href="http://pubs.opengroup.org/architecture/archimate2-doc/chap05.html">http://pubs.opengroup.org/architecture/archimate2-doc/chap05.html</a></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="06">
+    <h1>Archinsurance Example - Motivation Extension</h1>
+<p><strong><em>According to opengroup.org, "a motivational element is defined as an element that provides the context or reason lying behind the architecture of an enterprise.  The Motivation extension of ArchiMate adds the motivational concepts such as goal, principle, and requirement. It addresses the way the enterprise architecture is aligned to its context, as described by motivational elements.</em></strong></p>
+<p><img alt="Archinsurance Example - Motivation Extension" src="img/14.png"></p>
+<h2>Motivation Extension - Legend of Possible Elements</h2>
+<p><img alt="Motivation Extension Elements - Coloured Purple" src="img/14a.png"></p>
+<h2>Motivation Folder</h2>
+<p>Referring to the legend of elements above, review the elements created in the Motivation folder.</p>
+<p>For more information on Motivation, please see <a href="http://pubs.opengroup.org/architecture/archimate2-doc/chap10.html#_Toc371945252">http://pubs.opengroup.org/architecture/archimate2-doc/chap10.html#_Toc371945252</a></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="07">
+    <h1>Archinsurance Example - Implementation &amp; Migration Extension</h1>
+<p><strong><em>According to opengroup.org, this extension adds concepts related to the implementation and migration of architectures.  This extension includes concepts for modeling implementation programs and projects to support program, portfolio, and project management, and a plateau concept to support migration planning.</em></strong></p>
+<h2>Implementation &amp; Migration Extension - Legend of Possible Elements</h2>
+<p><img alt="Implementation &amp; Migration Extension Elements" src="img/16a.png"></p>
+<h2>Implementation &amp; Migration Folder</h2>
+<p>Note that the Archinsurance example does not have any implementation on migration elements added to it.</p>
+<p>For more information on Implementation and Migration, please see <a href="http://pubs.opengroup.org/architecture/archimate2-doc/chap11.html">http://pubs.opengroup.org/architecture/archimate2-doc/chap11.html</a></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="08">
+    <h1>Archinsurance Example - Connectors</h1>
+<p><strong><em>According to opengroup.org, a Junction is used to connect dynamic relationships of the same type. A Junction is used in a number of situations to connect dynamic (triggering or flow) relationships of the same type; for example, to indicate splits or joins.</em></strong></p>
+<h2>Connectors - Three Types of Junctions</h2>
+<p><img alt="Connectors - Three Types of Junctions" src="img/17.png"></p>
+<h2>Connectors Folder</h2>
+<p>Note that the Archinsurance example does not have any junctions added to it.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="09">
+    <h1>Archinsurance Example - Relations</h1>
+<p><strong><em>Contains the relationships between elements as they are created in Views (diagrams) and any user-created sub-folders.</em></strong></p>
+<h2>Classification of Relationships</h2>
+<p>Each element in the model can connect to one or more other elements via one or more relationships (connections).  These can be classified as either:</p>
+<ul>
+<li>Structural, which model the structural coherence of concepts of the same or different types.</li>
+<li>Dynamic, which are used to model (temporal) dependencies between behavioral concepts.</li>
+<li>Other, which do not fall in one of the two above categories.</li>
+</ul>
+<p><img alt="Structural Relationships" src="img/18a.png">
+<img alt="Dynamic Relationships" src="img/18b.png">
+<img alt="Other Relationships" src="img/18c.png"></p>
+<h2>Relations Folder</h2>
+<p>Referring to the legend of elements above, review the elements created in the Relations folder:</p>
+<p><img alt="Archinsurance Example - Relations Folder" src="img/18.png"></p>
+<p>For more information on relationships, please visit <a href="http://pubs.opengroup.org/architecture/archimate2-doc/chap07.html#_Toc371945208">http://pubs.opengroup.org/architecture/archimate2-doc/chap07.html#_Toc371945208</a></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="10">
+    <h1>Archinsurance Example - Views</h1>
+<p><strong><em>We will cover this in a practical later in the course. </em></strong></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="11">
+    <h1>Archi - some observations</h1>
+<p>Here are some useful observations from the <strong>Archi User Guide</strong> found in the <strong>Help</strong> area of Archi.</p>
+<h2>Deleting an element</h2>
+<p>If an element that you wish to delete appears in one or more Views you will be warned that it is referenced in those Views. If you then delete the element from the tree you will also delete it from any Views where it is referenced.</p>
+<h2>Adding New Elements to the View from the Palatte</h2>
+<p>If you add elements to a View from a palatte, they are automatically added to the appropriate type folder in your Model tree.</p>
+<h2>Elements in italics</h2>
+<p>If an element in the Model Tree is in italic font, this indicates that it is not used in any View.</p>
+<p><img alt="Elements in Italics" src="img/25.png"></p>
+<h2>Synchronising Selections in the Model Tree and a View</h2>
+<p>When selecting elements in the Model Tree and in diagram Views it is sometimes useful to synchronise the selection between the elements in both windows. Pressing the "Link to View" button in the Model Tree window allows this to happen:</p>
+<p><img alt="Link to View toggle button" src="img/26.png"></p>
+<h2>Filtering Element Types</h2>
+<p>To filter certain types of ArchiMate element you can select the different types to include in the filter/search in the drop-down menu:</p>
+<p><img alt="Filtering Element Types" src="img/27.png"></p>
+  </div>
+<script>
+$('.ui.menu .item')
+  .tab({
+    history: true,
+    historyType: 'hash'
+  })
+;
+</script>
+   </div>
+
+
+
+  <br><br>
+  <div class="ui bottom fixed borderless menu">
+    <div class="ui small item">
+    <p id="footertext">
+    Prepared by  Eamonn de Leastar (edeleastar@wit.ie). Except where otherwise noted, this content is licensed under a
+     <a  href="http://creativecommons.org/licenses/by-nc/4.0/" title="External link to http://creativecommons.org/licenses/by-nc/4.0/"
+       target="_blank">Creative Commons Attribution-NonCommercial 4.0 License
+     </a>
+     </p>
+    </div>
+  </div>    <script>
+
+$(document).ready(function()
+{
+  $("img").addClass ("ui image");
+  $('.ui.embed').embed();
+
+  var images = $(".lab img");
+  jQuery.each(images, function(i)  {
+    if((images[i].alt).length > 0)
+    {
+      var div_img = $(document.createElement("div")).addClass("ui segment");
+      $(images[i]).wrap(div_img);
+      var div_label = $(document.createElement("div")).addClass("ui ribbon teal top attached label");
+      div_label.append(images[i].alt);
+      $(div_label).insertBefore(images[i]);
+    }
+  });
+
+
+})    </script>
+
+  </body>
+ </html>
