@@ -1,0 +1,363 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+
+     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css" type="text/css">
+     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/solarized_light.min.css" rel="stylesheet" />
+
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/languages/java.min.js"></script>
+     <script>hljs.initHighlightingOnLoad();</script>
+
+      <style>
+
+
+body 
+{
+  font-family: "Open Sans", "Helvetica", "Helvetica Neue",  "Arial", sans-serif;
+}
+
+figcaption
+{
+  margin-bottom: 20px;
+}
+
+.vertical-align
+{
+  display: flex;
+  align-items: center;
+}
+
+.credits
+{
+  min-height:20px;
+}
+    </style>
+
+  </head>
+
+  <body>
+
+  <div class="ui container">
+<style>
+
+
+code
+{
+  font-family: "Monaco";
+  font-size: 110%;
+}
+
+img
+{
+  padding:1px;
+  border:1px solid black;
+}
+
+h1
+{
+  font-style:italic;
+  font-size:130%;
+  border-bottom: thin solid black;
+}
+h2
+{
+  font-size:110%;
+  border-bottom: thin solid black;
+}
+h3
+{
+  font-size:100%;
+  border-bottom: thin solid black;
+}
+
+</style>
+
+<div class="ui fixed top pointing inverted menu labmenu">
+  <header class="header item">
+    <a href="../index.html">
+      <i class="sitemap icon"></i>
+      Architecture Principles and Styles
+    </a>
+  </header>
+  <div class="right tab-menu menu">
+    <a class="active item" data-tab="Lab-09">
+        Lab-09
+    </a>
+      <a class="item" data-tab="Introduction">
+        Introduction
+      </a>
+      <a class="item" data-tab="D0">
+        D0
+      </a>
+      <a class="item" data-tab="D1">
+        D1
+      </a>
+      <a class="item" data-tab="D2">
+        D2
+      </a>
+      <a class="item" data-tab="D3">
+        D3
+      </a>
+    </div>
+</div>
+
+<br><br>
+
+  <div  class="ui tab segment lab" data-tab="Lab-09">
+    <h1>Objectives</h1>
+<p>In this Lab, we will build a few Architecture Views describing the design of a simple Analytics Dashboard for Runkeeper.com. This dashboard is the first application making use of data assets directly acquired from Healthgraph.com (operating as a separate company from Runkeeper.com).</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Introduction">
+    <h1>LAB INTRODUCTION (Section D)</h1>
+<p>The figure below present the outlay of the Web Desktop version of the new Runkeeper.com “Achiever Analytics Dashboard”, reserved to ELITE members only.</p>
+<p><img alt="" src="img/00.png"></p>
+<p>The dashboard is composed of 4 main areas:</p>
+<ul>
+<li>Area 1 (Left): An interface to select the dates of Activities you wish to run Analytics on</li>
+<li>Area 2 (Top): The summary banner of key data indicators describing Key Performance Indicators (KPIs), based on selected dates,</li>
+<li>Area 3 (Top-Right): A terrain topology overlay of all activities performed, based on selected dates,</li>
+<li>Area 4 (Bottom-Right): A graph showing the variations of a specific data point (here elevation, but it could be heart beat, steps, etc.) over the total duration of all selected activities.</li>
+</ul>
+<h2>Note 1</h2>
+<p>The dashboard above present data pertaining to Running Activities only.
+Dashboard contents and graphics for other activities may slightly vary, but the principle remains the same.</p>
+<h2>Note 2</h2>
+<p><strong>Red</strong> means a decrease in pace.
+<strong>Blue</strong> means in increase in pace.</p>
+<p>To describe the design of the Analytics Dashboard, we limit ourselves to the creation of the following Architecture Views:</p>
+<ul>
+<li>In Section D.0 Context View </li>
+<li>In Section D.1 Behavioral View </li>
+<li>In Section D.2 Information View </li>
+<li>In Section D.3 Functional View </li>
+</ul>
+<h2>Note 3</h2>
+<p>The two most important decisions made about the Architecture we will describe in the next section are:</p>
+<p>1.<strong><em>Performance by Design</em></strong>: an asynchronous batch analytics daemon continuously runs on Runkeeper's servers to perform the most data intensive calculations and prepare De-normalized data analytics views that the Dashboard can connect to </p>
+<p>2.<strong><em>Data Source Abstraction</em></strong>:  data from multiple sources (off-premise, and on-premise) is consolidated in one location), accessed through an indirection layer reducing coupling between front-end and back-end. </p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="D0">
+    <h1>STEP D0 – Creating the CONTEXT VIEW</h1>
+<p>The purpose of this view is to outline the main elements at play in the design of our analytics dashboard:</p>
+<ol>
+<li>Who will interact with the dashboard, performing what kind of actions </li>
+<li>What will interact with the dashboard, performing what kind of actions</li>
+</ol>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D0 - Context View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D0a – System Context”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/01.png"></p>
+<p>All User data candidate for Analytics is collected and correlated from 3 distinct sources of information: PostgreSQL (User Activity / Workouts data), REDIS (User Geo-positioning / Health Tracking data points) and HealthGraph (User Health Profile data).</p>
+<p>Resulting datasets (prepared for Analytics Dashboard reporting) are then persisted in a single location which is the authoritative source for reporting, i.e. providing data that can be analyzed under a number of reporting dimensions.</p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder named: “D0 – Context View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D0b – System Features”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/02.png"></p>
+<p>The architecture is composed of two main distinct components, running on different server processes, possibly on different servers, independently from one another.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="D1">
+    <h1>STEP D1 – Creating the BEHAVIORAL VIEW</h1>
+<p>The purpose of this View is to outline:</p>
+<ol>
+<li>How data gets collected and prepared for purposes building analytics data sets </li>
+<li>How analytics data sets are served to users </li>
+</ol>
+<h3>D1a: DATA PREPARATION</h3>
+<p>A Data Preparation process is triggered every time a User uploads new data points (e.g. a new activity feed, a modification of heath profile).
+The result of the data preparation stores User Analytics Views into Runkeeper's Data Warehouse.</p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D1 - Behavioral View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D1a – Data Preparation”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/03.png"></p>
+<h3>D1b: DASHBOARD RENDERING</h3>
+<p>To display render data analytics related to a set of selected dates, a number of reporting objects are generated from Runkeeper's Data Warehouse.</p>
+<p>The Data Warehouse stores all essential analytics data points required to fulfill analytics requests of all ELITE members.</p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D1 - Behavioral View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D1b – Dashboard Rendering”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/04.png"></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="D2">
+    <h1>STEP D2 – Creating the INFORMATION VIEW</h1>
+<p>The purpose of this View is to model:</p>
+<ol>
+<li>Data flow of the asynchronous Batch Analytics data preparation process </li>
+<li>Data flow of the synchronous request/response dashboard rendering process </li>
+</ol>
+<p><strong>Selected Data-driven Architectural Style</strong>: Data Warehousing ETL</p>
+<p><strong>Selected Architectural Patterns</strong>: Pipes &amp; Filters, Batch Data Processing</p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D2 - Information View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D2a – Batch Analytics Data Flow”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/05.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D2 - Information View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D2b – Dashboard Rendering Data Flow”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/06.png"></p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="D3">
+    <h1>STEP D3 – Creating the FUNCTIONAL VIEW(S) of our Analytics Dashboard</h1>
+<p>The purpose of this View is to outline:</p>
+<ol>
+<li>The structure of our design and grouping of key components </li>
+<li>How presentation components are abstracted data sources </li>
+</ol>
+<p><strong><em>Selected Application-driven Architectural Style</em></strong>: Layered Architecture – Relaxed Layering Variant.</p>
+<p><strong><em>Selected Architectural Patterns</em></strong>: Transfer Object, DAO (Data Access Object), Template View (MVC), Entity Aggregation.</p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D2 - Functional View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D3a – Indirection Layers””</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/07.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D - Analytics Dashboard”</p>
+</li>
+<li>
+<p>In the Model Tree, under the View folder, create a new sub-folder named: “D3 - Functional View”</p>
+</li>
+<li>
+<p>Within the folder newly added above, create a new Model canvas named “D3b – Data Provisioning”</p>
+</li>
+<li>
+<p>Clone the figure below</p>
+</li>
+</ul>
+<p><img alt="" src="img/08.png"></p>
+  </div>
+<script>
+$('.ui.menu .item')
+  .tab({
+    history: true,
+    historyType: 'hash'
+  })
+;
+</script>
+   </div>
+
+
+
+  <br><br>
+  <div class="ui bottom fixed borderless menu">
+    <div class="ui small item">
+    <p id="footertext">
+    Prepared by  Eamonn de Leastar (edeleastar@wit.ie). Except where otherwise noted, this content is licensed under a
+     <a  href="http://creativecommons.org/licenses/by-nc/4.0/" title="External link to http://creativecommons.org/licenses/by-nc/4.0/"
+       target="_blank">Creative Commons Attribution-NonCommercial 4.0 License
+     </a>
+     </p>
+    </div>
+  </div>    <script>
+
+$(document).ready(function()
+{
+  $("img").addClass ("ui image");
+  $('.ui.embed').embed();
+
+  var images = $(".lab img");
+  jQuery.each(images, function(i)  {
+    if((images[i].alt).length > 0)
+    {
+      var div_img = $(document.createElement("div")).addClass("ui segment");
+      $(images[i]).wrap(div_img);
+      var div_label = $(document.createElement("div")).addClass("ui ribbon teal top attached label");
+      div_label.append(images[i].alt);
+      $(div_label).insertBefore(images[i]);
+    }
+  });
+
+
+})    </script>
+
+  </body>
+ </html>
