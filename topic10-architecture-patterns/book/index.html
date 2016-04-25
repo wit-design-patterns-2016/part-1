@@ -1,0 +1,356 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+
+     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css" type="text/css">
+     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/solarized_light.min.css" rel="stylesheet" />
+
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/languages/java.min.js"></script>
+     <script>hljs.initHighlightingOnLoad();</script>
+
+      <style>
+
+
+body 
+{
+  font-family: "Open Sans", "Helvetica", "Helvetica Neue",  "Arial", sans-serif;
+}
+
+figcaption
+{
+  margin-bottom: 20px;
+}
+
+.vertical-align
+{
+  display: flex;
+  align-items: center;
+}
+
+.credits
+{
+  min-height:20px;
+}
+    </style>
+
+  </head>
+
+  <body>
+
+  <div class="ui container">
+<style>
+
+
+code
+{
+  font-family: "Monaco";
+  font-size: 110%;
+}
+
+img
+{
+  padding:1px;
+  border:1px solid black;
+}
+
+h1
+{
+  font-style:italic;
+  font-size:130%;
+  border-bottom: thin solid black;
+}
+h2
+{
+  font-size:110%;
+  border-bottom: thin solid black;
+}
+h3
+{
+  font-size:100%;
+  border-bottom: thin solid black;
+}
+
+</style>
+
+<div class="ui fixed top pointing inverted menu labmenu">
+  <header class="header item">
+    <a href="../index.html">
+      <i class="sitemap icon"></i>
+      Architecture Patterns
+    </a>
+  </header>
+  <div class="right tab-menu menu">
+    <a class="active item" data-tab="Lab-10">
+        Lab-10
+    </a>
+      <a class="item" data-tab="Introduction">
+        Introduction
+      </a>
+      <a class="item" data-tab="E4">
+        E4
+      </a>
+      <a class="item" data-tab="E5">
+        E5
+      </a>
+    </div>
+</div>
+
+<br><br>
+
+  <div  class="ui tab segment lab" data-tab="Lab-10">
+    <h1>Objectives</h1>
+<p>In this Lab, we will build the Architecture Description for Runkeeper’s Achiever Analytics Dashboard solution.  We will compose some of the Architectural Artifacts created in previous Labs into a single container document – i.e. an Architecture Description deliverable.</p>
+  </div>
+  <div  class="ui tab segment lab" data-tab="Introduction">
+    <h1>LAB INTRODUCTION (Section E)</h1>
+<p>In the past Labs we have created a number of Architectural Artifacts. IT Architects are expected to submit their Architecture for review and Stakeholder approval. In the same way IT Architects do, you will therefore have to submit your work assignment deliverable in the form of a single, all encompassing, Architecture Description document deliverable.</p>
+<p>In SECTION E of this Lab, for example purposes, we will build the Architecture Description for Runkeeper’s Achiever Analytics Dashboard solution.  We will compose some of the Architectural Artifacts created in previous Labs into a single container document – i.e. an Architecture Description deliverable.</p>
+<p>To achieve this, we will work from the Architecture Description document template provided by the TOGAF 9.1 Architecture Framework:</p>
+<ul>
+<li>
+<p><a href="./archives/TOGAF 9.1 AD.pdf">TOGAF 9.1 AD Template PDF</a> </p>
+</li>
+<li>
+<p><a href="./archives/TOGAF 9.1 AD.odt">TOGAF 9.1 AD Template ODT</a> </p>
+</li>
+</ul>
+<p><img alt="" src="img/00.png"></p>
+<h2>STEP E1</h2>
+<p>As we are starting our first deliverable, we will first focus on enumerating the View Models, Patterns, Styles and annotate the rationale behind our decisions.</p>
+<p>i.e. select the following Architecture Views:</p>
+<p><img alt="" src="img/01.png"></p>
+<p>...and list the Architecture Styles &amp; Patterns we will leverage, keeping in mind that we’ll need to explain the rationale behind their selection, and how these link to Views:</p>
+<p><img alt="" src="img/02.png"></p>
+<h2>STEP E2</h2>
+<p>We will address the Required Quality Attributes of the architecture with Perspectives,
+and for each, record decisions and trade-offs we made.</p>
+<p>This is something we haven’t yet worked in our Labs, but is an important aspect of our architecture,
+so let’s take the time to  document the required quality properties of our solution:</p>
+<p><img alt="" src="img/03.png"></p>
+<h2>STEP E3</h2>
+<p>Lastly, it is important to spend some time to capture elements of the problem space that give some essential context to the Architecture we put forward, and articulate a few key assumptions for Stakeholders to confirm:</p>
+<p><img alt="" src="img/04.png"></p>
+<h3>EXERCISE:</h3>
+<ul>
+<li>
+<p>Download the TOGAF AD 9.1 Template provided </p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD.odt">TOGAF 9.1 AD Template ODT</a></li>
+</ul>
+</li>
+<li>
+<p>Based on the descriptions provided above, fill-out the PROBLEM SCOPE section (Section A.1) of the AD Template</p>
+</li>
+<li>
+<p>Based on the descriptions provided above, fill-out the REQUIRED QUALITY PROPERTIES section (Section A.3) of the AD Template</p>
+</li>
+<li>
+<p>Based on the descriptions provided above, fill-out the ARCHITECTURE VIEWS section (Section B.1) of the AD Template</p>
+</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+  </div>
+  <div  class="ui tab segment lab" data-tab="E4">
+    <h1>SECTION E4. – DOCUMENTING VIEWS</h1>
+<h2>Step E.4.1</h2>
+<p>In order to describe the Context View of of Architecture Solution, we select two types MODEL PRIMITIVES, each based on a specific VIEW TYPE:</p>
+<p><img alt="" src="img/05.png"></p>
+<p>The SYSTEM CONTEXT MODEL describing part of our CONTEXT VIEW is described as follows:</p>
+<p><img alt="" src="img/06.png"></p>
+<p>The corresponding model artifact, created in a previous Lab greatly benefits from the descriptions above,
+(typically during an architecture review):</p>
+<p><img alt="" src="img/07.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>Based on the descriptions provided above, fill-out the VIEW INTENT section (Section B.2.1) of the AD Template</p>
+</li>
+<li>
+<p>Based on the descriptions provided above, fill-out the VIEW MODELLING ARTIFACTS section (Section B.2.2) of the AD Template</p>
+</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+<h2>Step E.4.2</h2>
+<p>The SYSTEM FEATURES MODEL describing part of our CONTEXT VIEW is described as follows:</p>
+<p><img alt="" src="img/08.png"></p>
+<p><img alt="" src="img/09.png"></p>
+<p>The following model artifact, created in a previous Lab, can then be reviewed:</p>
+<p><img alt="" src="img/10.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>Based on the descriptions provided above, fill-out the VIEW MODELLING ARTIFACTS section (Section B.2.2) of the AD Template.</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+<h2>Step E.4.3</h2>
+<p>In the same way we have document the Context View of our Architecture in the section above,
+other Views can be generated using the same structure.</p>
+<h3>EXERCISE</h3>
+<ul>
+<li>Complete Sections B of the AD Template using the following model artifacts created in previous Labs:</li>
+</ul>
+<p><img alt="" src="img/11.png"></p>
+<ul>
+<li>For each, try to justify the use of Model Kind, Patterns and Styles leveraged to model the View</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+  </div>
+  <div  class="ui tab segment lab" data-tab="E5">
+    <h1>SECTION E5. – DOCUMENTING PERSPECTIVES</h1>
+<p>We need to address the Required Quality Attributes of the architecture with Perspectives,  and for each, record decisions and trade-offs we made.</p>
+<p>For this Lab, we will prefer answering required quality attributes preferring textual description over visual models. There is not good reason for this; it is perfectly acceptable to annotate existing Archimate models with colors, legends and comments to document Perspectives.</p>
+<p>For example: A description of the Flexibility/Maintainability Perspective of our Analytics Dashboard.</p>
+<p><img alt="" src="img/12.png"></p>
+<p>However, the most common practice in the industry remains structured textual contents.</p>
+<p>As a result, and for the purposes of this Lab, what follows prefers a textual description over modeling.</p>
+<h2>Step E.5.1: Performance Perspective</h2>
+<p>Required Quality Attribute(s):</p>
+<p><img alt="" src="img/13.png"></p>
+<ul>
+<li>Recording of design decisions and trade-offs:</li>
+</ul>
+<p><img alt="" src="img/14.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>
+<p>Fill-out the PERFORMANCE PERSPECTIVE section (Section B.6.1) of the AD Template, using textual descriptions proposed above.</p>
+</li>
+<li>
+<p>Reflexion point: Imagine what models you would annotate if you had to represent your Perspectives using visual models (hence keeping traceability of architectural decisions version-controlled in the same framework as the rest of your model artifacts).</p>
+</li>
+<li>
+<p>Reflexion point: Since the Quality Properties of an Architecture (like Performance) permeate across many Views of a solution design, would generating a Mapping of existing Views into one Model help your annotation efforts?</p>
+</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+<h2>Step E.5.2: Scalability Perspective</h2>
+<p>Required Quality Attribute(s):</p>
+<p><img alt="" src="img/15.png"></p>
+<ul>
+<li>Recording of design decisions and trade-offs:</li>
+</ul>
+<p><img alt="" src="img/16.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>Fill-out the SCALABILITY PERSPECTIVE section (Section B.6.2) of the AD Template, using textual descriptions proposed above.</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+<h2>Step E.5.3: Testability Perspective</h2>
+<p>Required Quality Attribute(s):</p>
+<p><img alt="" src="img/17.png"></p>
+<ul>
+<li>Recording of design decisions and trade-offs:</li>
+</ul>
+<p><img alt="" src="img/18.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>Fill-out the TESTABILITY PERSPECTIVE section (Section B.6.3) of the AD Template, using textual descriptions proposed above.</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+<h2>Step E.5.4: Flexibility Perspective</h2>
+<p>Required Quality Attribute(s):</p>
+<p><img alt="" src="img/19.png"></p>
+<ul>
+<li>Recording of design decisions and trade-offs:</li>
+</ul>
+<p><img alt="" src="img/20.png"></p>
+<h3>EXERCISE</h3>
+<ul>
+<li>Fill-out the FLEXIBILITY PERSPECTIVE section (Section B.6.4) of the AD Template, using textual descriptions proposed above.</li>
+</ul>
+<p><strong>Note: The resulting output / solution can be found here:</strong></p>
+<ul>
+<li><a href="./archives/TOGAF 9.1 AD - RK.odt">TOGAF 9.1 AD RunKeeper Solution ODT</a> </li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.docx">TOGAF 9.1 AD RunKeeper Solution DOCX</a></li>
+<li><a href="./archives/TOGAF 9.1 AD - RK.pdf">TOGAF 9.1 AD RunKeeper Solution PDF</a></li>
+</ul>
+  </div>
+<script>
+$('.ui.menu .item')
+  .tab({
+    history: true,
+    historyType: 'hash'
+  })
+;
+</script>
+   </div>
+
+
+
+  <br><br>
+  <div class="ui bottom fixed borderless menu">
+    <div class="ui small item">
+    <p id="footertext">
+    Prepared by  Eamonn de Leastar (edeleastar@wit.ie). Except where otherwise noted, this content is licensed under a
+     <a  href="http://creativecommons.org/licenses/by-nc/4.0/" title="External link to http://creativecommons.org/licenses/by-nc/4.0/"
+       target="_blank">Creative Commons Attribution-NonCommercial 4.0 License
+     </a>
+     </p>
+    </div>
+  </div>    <script>
+
+$(document).ready(function()
+{
+  $("img").addClass ("ui image");
+  $('.ui.embed').embed();
+
+  var images = $(".lab img");
+  jQuery.each(images, function(i)  {
+    if((images[i].alt).length > 0)
+    {
+      var div_img = $(document.createElement("div")).addClass("ui segment");
+      $(images[i]).wrap(div_img);
+      var div_label = $(document.createElement("div")).addClass("ui ribbon teal top attached label");
+      div_label.append(images[i].alt);
+      $(div_label).insertBefore(images[i]);
+    }
+  });
+
+
+})    </script>
+
+  </body>
+ </html>
